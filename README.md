@@ -34,6 +34,13 @@ You can install by [cargo](https://crates.io/crates/svls).
 cargo install svls
 ```
 
+## Configuration
+
+### Diagnostic
+
+Diagnostic requires `.svlint.toml`.
+Please see [svlint#configuration](https://github.com/dalance/svlint#configuration) for the detailed information.
+
 ## Usage
 
 ### Neovim with [LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim)
