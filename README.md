@@ -38,7 +38,7 @@ cargo install svls
 
 ### Diagnostic
 
-Diagnostic requires `.svlint.toml`.
+Diagnostic requires `.svlint.toml` at the root of repository.
 Please see [svlint#configuration](https://github.com/dalance/svlint#configuration) for the detailed information.
 
 ## Usage
