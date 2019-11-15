@@ -1,0 +1,31 @@
+name: svls
+version: &version v0.1.0
+summary: SystemVerilog language server
+description: |
+  A language server supporting SystemVerilog ( IEEE Std. 1800-2017 )
+base: core18
+license: MIT
+
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: i386
+  - build-on: ppc64el
+  - build-on: arm64
+  - build-on: armhf
+
+apps:
+  svls:
+    command: svls
+
+parts:
+  svls:
+    source: https://github.com/dalance/svls.git
+    source-tag: *version
+    plugin: rust
+    stage-packages:
+      - libc6
+      - libgcc1
+      - libstdc++6
+      - zlib1g
