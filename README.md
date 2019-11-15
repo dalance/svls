@@ -8,6 +8,8 @@ SystemVerilog language server
 [![Crates.io](https://img.shields.io/crates/v/svls.svg)](https://crates.io/crates/svls)
 [![svlint](https://snapcraft.io/svls/badge.svg)](https://snapcraft.io/svls)
 
+![test](https://user-images.githubusercontent.com/4331004/68925756-23478f00-07c7-11ea-84f3-2afd23ed2764.gif)
+
 ## Feature
 
 * Diagnostic with [svlint](https://github.com/dalance/svlint).
