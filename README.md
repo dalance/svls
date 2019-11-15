@@ -43,6 +43,10 @@ Please see [svlint#configuration](https://github.com/dalance/svlint#configuratio
 
 ## Usage
 
+### Visual Studio Code
+
+Please install [svls-vscode](https://marketplace.visualstudio.com/items?itemName=dalance.svls-vscode) extension from marketplace.
+
 ### Neovim with [LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim)
 
 ```
@@ -51,3 +55,4 @@ let g:LanguageClient_serverCommands = {
     \ }
 
 ```
+
