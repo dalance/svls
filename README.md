@@ -12,7 +12,7 @@ SystemVerilog language server
 
 ## Feature
 
-* Diagnostic with [svlint](https://github.com/dalance/svlint).
+* Diagnostic based on [svlint](https://github.com/dalance/svlint).
 
 ## Installation
 
