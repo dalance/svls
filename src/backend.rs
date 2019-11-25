@@ -36,6 +36,9 @@ impl Backend {
                     for node in &syntax_tree {
                         for failed in linter.check(&syntax_tree, &node) {
                             debug!("{:?}", failed);
+                            if failed.path != PathBuf::from("") {
+                                continue;
+                            }
                             let (line, col) = get_position(s, failed.beg);
                             ret.push(Diagnostic::new(
                                 Range::new(
@@ -52,7 +55,9 @@ impl Backend {
                     }
                 }
             }
-            _ => (),
+            Err(x) => {
+                debug!("parse_error: {:?}", x);
+            }
         }
         ret
     }
@@ -66,7 +71,7 @@ impl LanguageServer for Backend {
     type HoverFuture = BoxFuture<Option<Hover>>;
     type HighlightFuture = BoxFuture<Option<Vec<DocumentHighlight>>>;
 
-    fn initialize(&self, _printer: &Printer, params: InitializeParams) -> Result<InitializeResult> {
+    fn initialize(&self, printer: &Printer, params: InitializeParams) -> Result<InitializeResult> {
         debug!("root_path: {:?}", params.root_path);
         debug!("root_uri: {:?}", params.root_uri);
 
@@ -79,6 +84,7 @@ impl LanguageServer for Backend {
             let config = toml::from_str(&s).unwrap();
             Some(Linter::new(config))
         } else {
+            printer.log_message(MessageType::Error, &format!(".svlint.toml is not found"));
             None
         };
 
