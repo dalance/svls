@@ -993,7 +993,7 @@ dependencies = [
 
 [[package]]
 name = "svlint"
-version = "0.2.14"
+version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "colored 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1022,7 +1022,7 @@ dependencies = [
  "simplelog 0.7.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "sv-parser 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "svlint 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "svlint 0.2.15 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio 0.1.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "tower-lsp 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1549,7 +1549,7 @@ dependencies = [
 "checksum sv-parser-parser 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)" = "23e9229d5e9a6607e2d87863b8d6ccf7cb97e7949b97d7d97006b37b5cc250f0"
 "checksum sv-parser-pp 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)" = "90a3f9b55dd58f8973ba298d99675502f4cf68561f8eb23fcfae14fc2028e222"
 "checksum sv-parser-syntaxtree 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)" = "a3582b49d091d46ef622b50175e0e2c5c4e6a7ee01763fb5602ec241c9e29189"
-"checksum svlint 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)" = "25544e060318f7609c77844a25241093997f38280797f588c5a2eeae5ad6f3c3"
+"checksum svlint 0.2.15 (registry+https://github.com/rust-lang/crates.io-index)" = "8a2f4c71d4181ea32c2b4f179f6f16a828127358ac4303a601adebf196a02df1"
 "checksum syn 0.15.44 (registry+https://github.com/rust-lang/crates.io-index)" = "9ca4b3b69a77cbe1ffc9e198781b7acb0c7365a883670e8f1c1bc66fba79a5c5"
 "checksum syn 1.0.8 (registry+https://github.com/rust-lang/crates.io-index)" = "661641ea2aa15845cddeb97dad000d22070bb5c1fb456b96c1cba883ec691e92"
 "checksum synstructure 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)" = "67656ea1dc1b41b1451851562ea232ec2e5a80242139f7e679ceccfb5d61f545"

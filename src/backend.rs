@@ -9,6 +9,7 @@ use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 use sv_parser::parse_sv_str;
+use svlint::config::Config;
 use svlint::linter::Linter;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{LanguageServer, Printer};
@@ -57,6 +58,22 @@ impl Backend {
             }
             Err(x) => {
                 debug!("parse_error: {:?}", x);
+                match x.kind() {
+                    sv_parser::ErrorKind::Parse(Some((path, pos))) => {
+                        if path == &PathBuf::from("") {
+                            let (line, col) = get_position(s, *pos);
+                            ret.push(Diagnostic::new(
+                                Range::new(Position::new(line, col), Position::new(line, col + 1)),
+                                Some(DiagnosticSeverity::Error),
+                                None,
+                                Some(String::from("svls")),
+                                String::from("parse error"),
+                                None,
+                            ));
+                        }
+                    }
+                    _ => (),
+                }
             }
         }
         ret
@@ -84,8 +101,11 @@ impl LanguageServer for Backend {
             let config = toml::from_str(&s).unwrap();
             Some(Linter::new(config))
         } else {
-            printer.log_message(MessageType::Error, &format!(".svlint.toml is not found"));
-            None
+            printer.log_message(
+                MessageType::Warning,
+                &format!(".svlint.toml is not found. Enable all lint rules."),
+            );
+            Some(Linter::new(Config::new().enable_all()))
         };
 
         let mut w = self.root_path.write().unwrap();
