@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.1...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.1.2...Unreleased) - ReleaseDate
+
+## [v0.1.2](https://github.com/dalance/svls/compare/v0.1.1...v0.1.2) - 2019-11-25
 
 * [Added] Show parse error
 * [Changed] Enable all rules when `.svlint.toml` is not found
