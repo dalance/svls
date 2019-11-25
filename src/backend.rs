@@ -61,9 +61,15 @@ impl Backend {
                 match x.kind() {
                     sv_parser::ErrorKind::Parse(Some((path, pos))) => {
                         if path == &PathBuf::from("") {
-                            let (line, col) = get_position(s, *pos);
+                            let pos = *pos;
+                            let (line, col) = get_position(s, pos);
+                            let line_end = get_line_end(s, pos);
+                            let len = line_end - pos as u64;
                             ret.push(Diagnostic::new(
-                                Range::new(Position::new(line, col), Position::new(line, col + 1)),
+                                Range::new(
+                                    Position::new(line, col),
+                                    Position::new(line, col + len),
+                                ),
                                 Some(DiagnosticSeverity::Error),
                                 None,
                                 Some(String::from("svls")),
@@ -229,4 +235,17 @@ fn get_position(s: &str, pos: usize) -> (u64, u64) {
         p += 1;
     }
     (line, col)
+}
+
+fn get_line_end(s: &str, pos: usize) -> u64 {
+    let mut p = pos;
+    while p < s.len() {
+        if let Some(c) = s.get(p..p + 1) {
+            if c == "\n" {
+                break;
+            }
+        }
+        p += 1;
+    }
+    p as u64
 }
