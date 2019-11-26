@@ -1,15 +1,15 @@
+use crate::config::Config;
 use futures::future;
 use jsonrpc_core::{BoxFuture, Result};
 use log::debug;
 use serde_json::Value;
 use std::collections::HashMap;
+use std::default::Default;
 use std::env;
-use std::fs::File;
-use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 use sv_parser::parse_sv_str;
-use svlint::config::Config;
+use svlint::config::Config as LintConfig;
 use svlint::linter::Linter;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{LanguageServer, Printer};
@@ -18,18 +18,33 @@ use tower_lsp::{LanguageServer, Printer};
 pub struct Backend {
     root_path: Arc<RwLock<Option<String>>>,
     root_uri: Arc<RwLock<Option<Url>>>,
+    config: Arc<RwLock<Option<Config>>>,
     linter: Arc<RwLock<Option<Linter>>>,
 }
 
 impl Backend {
     fn lint(&self, s: &str) -> Vec<Diagnostic> {
         let mut ret = Vec::new();
-        let parsed = parse_sv_str(
-            s,
-            &PathBuf::from(""),
-            &HashMap::new(),
-            &Vec::<PathBuf>::new(),
-        );
+
+        let root_path = self.root_path.read().unwrap();
+        let root_path = if let Some(ref root_path) = *root_path {
+            PathBuf::from(root_path)
+        } else {
+            PathBuf::from("")
+        };
+
+        let config = self.config.read().unwrap();
+        let mut include_paths = Vec::new();
+        if let Some(ref config) = *config {
+            for path in &config.verilog.include_paths {
+                let mut p = root_path.clone();
+                p.push(PathBuf::from(path));
+                include_paths.push(p);
+            }
+        };
+        debug!("include_paths: {:?}", include_paths);
+
+        let parsed = parse_sv_str(s, &PathBuf::from(""), &HashMap::new(), &include_paths);
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
                 let linter = self.linter.read().unwrap();
@@ -98,21 +113,31 @@ impl LanguageServer for Backend {
         debug!("root_path: {:?}", params.root_path);
         debug!("root_uri: {:?}", params.root_uri);
 
-        let config_svlint = search_config(&PathBuf::from(".svlint.toml"));
-        debug!("config_svlint: {:?}", config_svlint);
-        let linter = if let Some(config) = config_svlint {
-            let mut f = File::open(&config).unwrap();
-            let mut s = String::new();
-            let _ = f.read_to_string(&mut s);
-            let config = toml::from_str(&s).unwrap();
-            Some(Linter::new(config))
-        } else {
-            printer.log_message(
-                MessageType::Warning,
-                &format!(".svlint.toml is not found. Enable all lint rules."),
-            );
-            Some(Linter::new(Config::new().enable_all()))
+        let config_svls = search_config(&PathBuf::from(".svls.toml"));
+        debug!("config_svls: {:?}", config_svls);
+        let config = match generate_config(config_svls) {
+            Ok(x) => x,
+            Err(x) => {
+                printer.show_message(MessageType::Warning, &x);
+                Config::default()
+            }
         };
+
+        if config.option.linter {
+            let config_svlint = search_config(&PathBuf::from(".svlint.toml"));
+            debug!("config_svlint: {:?}", config_svlint);
+
+            let linter = match generate_linter(config_svlint) {
+                Ok(x) => x,
+                Err(x) => {
+                    printer.show_message(MessageType::Warning, &x);
+                    Linter::new(LintConfig::new().enable_all())
+                }
+            };
+
+            let mut w = self.linter.write().unwrap();
+            *w = Some(linter);
+        }
 
         let mut w = self.root_path.write().unwrap();
         *w = params.root_path.clone();
@@ -120,8 +145,8 @@ impl LanguageServer for Backend {
         let mut w = self.root_uri.write().unwrap();
         *w = params.root_uri.clone();
 
-        let mut w = self.linter.write().unwrap();
-        *w = linter;
+        let mut w = self.config.write().unwrap();
+        *w = Some(config);
 
         Ok(InitializeResult {
             capabilities: ServerCapabilities {
@@ -214,6 +239,50 @@ fn search_config(config: &Path) -> Option<PathBuf> {
         None
     } else {
         None
+    }
+}
+
+fn generate_config(config: Option<PathBuf>) -> std::result::Result<Config, String> {
+    if let Some(config) = config {
+        if let Ok(s) = std::fs::read_to_string(&config) {
+            if let Ok(config) = toml::from_str(&s) {
+                Ok(config)
+            } else {
+                Err(format!(
+                    "Failed to parse {}. Enable all lint rules.",
+                    config.to_string_lossy()
+                ))
+            }
+        } else {
+            Err(format!(
+                "Failed to read {}. Enable all lint rules.",
+                config.to_string_lossy()
+            ))
+        }
+    } else {
+        Ok(Config::default())
+    }
+}
+
+fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, String> {
+    if let Some(config) = config {
+        if let Ok(s) = std::fs::read_to_string(&config) {
+            if let Ok(config) = toml::from_str(&s) {
+                Ok(Linter::new(config))
+            } else {
+                Err(format!(
+                    "Failed to parse {}. Enable all lint rules.",
+                    config.to_string_lossy()
+                ))
+            }
+        } else {
+            Err(format!(
+                "Failed to read {}. Enable all lint rules.",
+                config.to_string_lossy()
+            ))
+        }
+    } else {
+        Err(format!(".svlint.toml is not found. Enable all lint rules."))
     }
 }
 

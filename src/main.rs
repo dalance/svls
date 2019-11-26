@@ -1,4 +1,5 @@
 mod backend;
+mod config;
 
 use backend::Backend;
 use log::debug;

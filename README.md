@@ -12,7 +12,7 @@ SystemVerilog language server
 
 ## Feature
 
-* Diagnostic based on [svlint](https://github.com/dalance/svlint).
+* Linter based on [svlint](https://github.com/dalance/svlint).
 
 ## Installation
 
@@ -38,9 +38,31 @@ cargo install svls
 
 ## Configuration
 
-### Diagnostic
+### Language server
 
-Diagnostic requires `.svlint.toml` at the root of repository.
+svls uses `.svls.toml` at the root of repository.
+The example of `.svls.toml` is below:
+
+```toml
+[verilog]
+include_paths = ["src/header"]
+
+[option]
+linter = true
+```
+
+#### `[verilog]` section
+
+`include_paths` is include paths from the root of repository.
+
+#### `[option]` section
+
+`linter` shows whether linter feature is enabled.
+
+### Linter
+
+Linter uses `.svlint.toml` at the root of repository.
+If `.svlint.toml` can't be used, all lint rules are enabled.
 Please see [svlint#configuration](https://github.com/dalance/svlint#configuration) for the detailed information.
 
 ## Usage
@@ -49,12 +71,22 @@ Please see [svlint#configuration](https://github.com/dalance/svlint#configuratio
 
 Please install [svls-vscode](https://marketplace.visualstudio.com/items?itemName=dalance.svls-vscode) extension from marketplace.
 
-### Neovim with [LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim)
+### Vim/Neovim with [LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim)
 
-```
+```viml
 let g:LanguageClient_serverCommands = {
     \ 'systemverilog': ['svls'],
     \ }
-
 ```
 
+### Vim/Neovim with [vim-lsp](https://github.com/prabirshrestha/vim-lsp)
+
+```viml
+if executable('svls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'svls',
+        \ 'cmd': {server_info->['svls']},
+        \ 'whitelist': ['systemverilog'],
+        \ })
+endif
+```
