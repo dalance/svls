@@ -202,11 +202,13 @@ impl LanguageServer for Backend {
     }
 
     fn did_open(&self, printer: &Printer, params: DidOpenTextDocumentParams) {
+        debug!("did_open");
         let diag = self.lint(&params.text_document.text);
         printer.publish_diagnostics(params.text_document.uri, diag);
     }
 
     fn did_change(&self, printer: &Printer, params: DidChangeTextDocumentParams) {
+        debug!("did_change");
         let diag = self.lint(&params.content_changes[0].text);
         printer.publish_diagnostics(params.text_document.uri, diag);
     }

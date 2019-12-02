@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.4...Unreleased) - ReleaseDate
 
+* [Changed] Update sv-parser
+
 ## [v0.1.4](https://github.com/dalance/svls/compare/v0.1.3...v0.1.4) - 2019-11-26
 
 * [Added] configuration by `.svls.toml`
