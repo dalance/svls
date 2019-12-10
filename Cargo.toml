@@ -1,6 +1,6 @@
 [package]
 name = "svls"
-version = "0.1.8"
+version = "0.1.9-pre"
 authors = ["dalance@gmail.com"]
 repository = "https://github.com/dalance/svls"
 keywords = ["lsp", "language-server", "verilog", "systemverilog"]
