@@ -1001,7 +1001,7 @@ dependencies = [
 
 [[package]]
 name = "svls"
-version = "0.1.8-pre"
+version = "0.1.8"
 dependencies = [
  "anyhow 1.0.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.29 (registry+https://github.com/rust-lang/crates.io-index)",

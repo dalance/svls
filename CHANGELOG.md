@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.7...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.1.8...Unreleased) - ReleaseDate
+
+## [v0.1.8](https://github.com/dalance/svls/compare/v0.1.7...v0.1.8) - 2019-12-10
 
 * [Changed] Update sv-parser
 * [Changed] Update tower-lsp
