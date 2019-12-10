@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.7...Unreleased) - ReleaseDate
 
+* [Changed] Update sv-parser
+* [Changed] Update tower-lsp
+
 ## [v0.1.7](https://github.com/dalance/svls/compare/v0.1.6...v0.1.7) - 2019-12-05
 
 ## [v0.1.6](https://github.com/dalance/svls/compare/v0.1.5...v0.1.6) - 2019-12-03
