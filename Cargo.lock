@@ -913,20 +913,20 @@ dependencies = [
 
 [[package]]
 name = "sv-parser"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "nom 5.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom-greedyerror 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-error 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-pp 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-syntaxtree 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-error 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-pp 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-syntaxtree 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "sv-parser-error"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "failure 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -934,7 +934,7 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-macros"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "quote 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -943,7 +943,7 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-parser"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "nom 5.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -953,36 +953,36 @@ dependencies = [
  "nom-tracable 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom_locate 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "str-concat 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-macros 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-syntaxtree 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-macros 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-syntaxtree 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "sv-parser-pp"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "failure 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom 5.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom-greedyerror 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-error 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-syntaxtree 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-error 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-syntaxtree 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "sv-parser-syntaxtree"
-version = "0.4.7"
+version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "regex 1.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser-macros 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser-macros 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "walkdir 2.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "svlint"
-version = "0.2.18"
+version = "0.2.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "colored 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -993,7 +993,7 @@ dependencies = [
  "serde_derive 1.0.103 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_regex 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "term 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "walkdir 2.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1012,8 +1012,8 @@ dependencies = [
  "serde_json 1.0.44 (registry+https://github.com/rust-lang/crates.io-index)",
  "simplelog 0.7.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "sv-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "svlint 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sv-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "svlint 0.2.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio 0.1.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "tower-lsp 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1518,13 +1518,13 @@ dependencies = [
 "checksum strsim 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a"
 "checksum structopt 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "30b3a3e93f5ad553c38b3301c8a0a0cec829a36783f6a0c467fc4bf553a5f5bf"
 "checksum structopt-derive 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "ea692d40005b3ceba90a9fe7a78fa8d4b82b0ce627eebbffc329aab850f3410e"
-"checksum sv-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "af76b8b964bf3876b01169c32cbd9275c97040bec203c6635a3199b7237114f4"
-"checksum sv-parser-error 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "091ee340abd5d9a65501148fb75c19513cc3619535183f2b63a9f46989bea5e6"
-"checksum sv-parser-macros 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "74aab3a0ddbdb39e26977c0e15b9bbb23f28154ceece22e9acb8dfb2adcd5978"
-"checksum sv-parser-parser 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "0190796be3ea14490e489041d75509cfa41edf8a4f2bb114a35dae84ed678901"
-"checksum sv-parser-pp 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "7af1816d509843c5478152ab8b58c21a4200bffc20a529d28a5e393908bc99e6"
-"checksum sv-parser-syntaxtree 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "2a754205cfdd46aca9f775bc51a2f528bb700e7a1c0225b3c6d06d0ae84cd41a"
-"checksum svlint 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)" = "2f2983a95c6dd553c90d516fad8cfc39b185f75ebcb7941c1cac58eb5a108bbb"
+"checksum sv-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "dadb14c4c610fade2a8badbbbbd0cb297c1547b428fd6373b98ca94ee3365054"
+"checksum sv-parser-error 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "52a5fbbf9bbcd0d887ef4dd1fa78e4cd884ddeb7caa614f8ff20fc862fe76084"
+"checksum sv-parser-macros 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "8c3d33368a26e3ade654c985a05b546f2aee8944b20cb085e9caef569818a383"
+"checksum sv-parser-parser 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "e4b1a941c0c03c828d224532b6d7de5a1afa2c42e8e30e8845bd8be77becbfe4"
+"checksum sv-parser-pp 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "c1c88a6b771ae46eca566d32198d59aac35526339a678a6a3dc2325d370a4ea8"
+"checksum sv-parser-syntaxtree 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)" = "cd8ec02246dd14603c18dd5521c00f5024cc50b6298ef381cb89f3a25b0f5244"
+"checksum svlint 0.2.19 (registry+https://github.com/rust-lang/crates.io-index)" = "d9e942afdf40ca68b8ff55f5cbb6bacf3e2c481188be9c5299d77bee19d0e711"
 "checksum syn 1.0.11 (registry+https://github.com/rust-lang/crates.io-index)" = "dff0acdb207ae2fe6d5976617f887eb1e35a2ba52c13c7234c790960cdad9238"
 "checksum synstructure 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)" = "67656ea1dc1b41b1451851562ea232ec2e5a80242139f7e679ceccfb5d61f545"
 "checksum term 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)" = "edd106a334b7657c10b7c540a0106114feadeb4dc314513e97df481d5d966f42"
