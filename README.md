@@ -90,3 +90,116 @@ if executable('svls')
         \ })
 endif
 ```
+
+### Emacs with [lsp-mode](https://github.com/emacs-lsp/lsp-mode)
+
+```emacs-lisp
+(use-package flycheck
+  :ensure t
+  :defer t
+  :init (global-flycheck-mode t))
+
+(use-package company
+  :ensure t
+  :defer t
+  :init (global-company-mode t)
+  :config
+  ;; Company Flx adds fuzzy matching to company, powered by the sophisticated
+  ;; sorting heuristics  in =flx=
+  (use-package company-flx
+    :ensure t
+    :after company
+    :init (company-flx-mode t))
+  ;; Company Quickhelp
+  ;; When idling on a completion candidate the documentation for the
+  ;; candidate will pop up after `company-quickhelp-delay' seconds.
+  (use-package company-quickhelp
+    :after company
+    :ensure t
+    ;; :init (company-quickhelp-mode t)
+    :hook (prog-mode . (lambda ()
+                         (when (window-system)
+                           (company-quickhelp-local-mode))))
+    :config
+    (setq company-quickhelp-delay 0.2
+          company-quickhelp-max-lines nil)))
+
+(use-package lsp-mode
+  :defer t
+  :ensure t
+  :commands lsp
+  :config
+  (setq lsp-log-io nil
+        lsp-auto-configure t
+        lsp-auto-guess-root t
+        lsp-enable-completion-at-point t
+        lsp-enable-xref t
+        lsp-prefer-flymake nil
+        lsp-use-native-json t
+        lsp-enable-indentation t
+        lsp-response-timeout 10
+        lsp-restart 'auto-restart
+        lsp-keep-workspace-alive t
+        lsp-eldoc-render-all nil
+        lsp-enable-snippet nil
+        lsp-enable-folding t)
+   ;;; lsp-ui gives us the blue documentation boxes and the sidebar info
+  (use-package lsp-ui
+    :defer t
+    :ensure t
+    :after lsp
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-sideline-ignore-duplicate t
+          lsp-ui-sideline-delay 0.5
+          lsp-ui-sideline-show-symbol t
+          lsp-ui-sideline-show-hover t
+          lsp-ui-sideline-show-diagnostics t
+          lsp-ui-sideline-show-code-actions t
+          lsp-ui-peek-always-show t
+          lsp-ui-doc-use-childframe t)
+    :bind
+    (:map lsp-ui-mode-map
+          ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+          ([remap xref-find-references] . lsp-ui-peek-find-references))
+    :hook
+    ((lsp-mode . lsp-ui-mode)
+     (lsp-after-open . (lambda ()
+                         (lsp-ui-flycheck-enable t)
+                         (lsp-ui-sideline-enable t)
+                         (lsp-ui-imenu-enable t)
+                         (lsp-lens-mode t)
+                         (lsp-ui-peek-enable t)
+                         (lsp-ui-doc-enable t)))))
+  ;;; company lsp
+  ;; install LSP company backend for LSP-driven completion
+  (use-package company-lsp
+    :defer t
+    :ensure t
+    :after company
+    :commands company-lsp
+    :config
+    (setq company-lsp-cache-candidates t
+          company-lsp-enable-recompletion t
+          company-lsp-enable-snippet t
+          company-lsp-async t)
+    ;; avoid, as this changes it globally do it in the major mode instead (push
+    ;; 'company-lsp company-backends) better set it locally
+    :hook (lsp-after-open . (lambda()
+                              (add-to-list (make-local-variable 'company-backends)
+                                           'company-lsp)))))
+
+(use-package verilog-mode
+  :defer t
+  :config
+  (require 'lsp)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("svls"))
+   :major-modes '(verilog-mode)
+   :priority -1
+   ))
+  :hook (verilog-mode . (lambda()
+      (lsp)
+      (flycheck-mode t)
+      (add-to-list 'lsp-language-id-configuration '(verilog-mode . "verilog")))))
+```
