@@ -73,10 +73,9 @@ impl Backend {
             }
             Err(x) => {
                 debug!("parse_error: {:?}", x);
-                match x.kind() {
-                    sv_parser::ErrorKind::Parse(Some((path, pos))) => {
-                        if path == &PathBuf::from("") {
-                            let pos = *pos;
+                match x {
+                    sv_parser::Error::Parse(Some((path, pos))) => {
+                        if path == PathBuf::from("") {
                             let (line, col) = get_position(s, pos);
                             let line_end = get_line_end(s, pos);
                             let len = line_end - pos as u64;
