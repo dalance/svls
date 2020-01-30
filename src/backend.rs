@@ -44,7 +44,13 @@ impl Backend {
         };
         debug!("include_paths: {:?}", include_paths);
 
-        let parsed = parse_sv_str(s, &PathBuf::from(""), &HashMap::new(), &include_paths);
+        let parsed = parse_sv_str(
+            s,
+            &PathBuf::from(""),
+            &HashMap::new(),
+            &include_paths,
+            false,
+        );
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
                 let linter = self.linter.read().unwrap();
