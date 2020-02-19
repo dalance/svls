@@ -18,6 +18,9 @@ architectures:
 apps:
   svls:
     command: svls
+    plugs:
+      - home
+      - removable-media
 
 parts:
   svls:

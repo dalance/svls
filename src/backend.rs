@@ -53,10 +53,10 @@ impl Backend {
         );
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
-                let linter = self.linter.read().unwrap();
-                if let Some(ref linter) = *linter {
-                    for node in &syntax_tree {
-                        for failed in linter.check(&syntax_tree, &node) {
+                let mut linter = self.linter.write().unwrap();
+                if let Some(ref mut linter) = *linter {
+                    for event in syntax_tree.into_iter().event() {
+                        for failed in linter.check(&syntax_tree, &event) {
                             debug!("{:?}", failed);
                             if failed.path != PathBuf::from("") {
                                 continue;
