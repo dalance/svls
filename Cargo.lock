@@ -986,7 +986,7 @@ dependencies = [
 
 [[package]]
 name = "svlint"
-version = "0.4.0"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "anyhow 1.0.25 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1019,7 +1019,7 @@ dependencies = [
  "simplelog 0.7.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "sv-parser 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "svlint 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "svlint 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio 0.1.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "tower-lsp 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1557,7 +1557,7 @@ dependencies = [
 "checksum sv-parser-parser 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "0455be0d2b091b16ffa429090fdbec9755c85beb81b18236acb48f82b96551a0"
 "checksum sv-parser-pp 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "d9bf59a05c4629c4eb19f030f98179824e7e01ca483d47456e6b0df33d123e8e"
 "checksum sv-parser-syntaxtree 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "66fbe5ef89aa4a09e019ae2a00d58d361bcac241218463bd3eee3123866dcdd1"
-"checksum svlint 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "21dcaa606e2521a464789ab7a8037c66be227e005aa3a25c5da7f71dab2f74bb"
+"checksum svlint 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "f25bc14015d4d469c365735e9edfe679fd8ed6c8e97e3d62133f1ebf87fc8ea2"
 "checksum syn 1.0.11 (registry+https://github.com/rust-lang/crates.io-index)" = "dff0acdb207ae2fe6d5976617f887eb1e35a2ba52c13c7234c790960cdad9238"
 "checksum synstructure 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)" = "67656ea1dc1b41b1451851562ea232ec2e5a80242139f7e679ceccfb5d61f545"
 "checksum term 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)" = "edd106a334b7657c10b7c540a0106114feadeb4dc314513e97df481d5d966f42"
