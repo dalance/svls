@@ -26,7 +26,8 @@ pub struct Opt {
 // Main
 // -------------------------------------------------------------------------------------------------
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let opt = Opt::from_args();
 
     if opt.debug {
@@ -43,10 +44,8 @@ fn main() {
     let stdout = tokio::io::stdout();
 
     let (service, messages) = LspService::new(Backend::default());
-    let handle = service.close_handle();
-    let server = Server::new(stdin, stdout)
+    Server::new(stdin, stdout)
         .interleave(messages)
-        .serve(service);
-
-    tokio::run(handle.run_until_exit(server));
+        .serve(service)
+        .await;
 }

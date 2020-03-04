@@ -25,7 +25,7 @@ pre-release-replacements = [
 
 [dependencies]
 anyhow       = "1.0"
-futures      = "0.1"
+futures      = "0.3"
 jsonrpc-core = "14.0"
 log          = "0.4"
 serde        = "1.0"
@@ -35,6 +35,6 @@ simplelog    = "0.7"
 structopt    = "0.3"
 svlint       = "0.4.2"
 sv-parser    = "0.6.3"
-tokio        = "0.1"
+tokio        = {version = "0.2", features = ["io-std", "macros", "test-util"]}
 toml         = "0.4"
-tower-lsp    = "0.4.1"
+tower-lsp    = "0.9"
