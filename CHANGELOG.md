@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.15...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.1.16...Unreleased) - ReleaseDate
+
+## [v0.1.16](https://github.com/dalance/svls/compare/v0.1.15...v0.1.16) - 2020-04-03
 
 * [Changed] Update sv-parser and svlint
 
