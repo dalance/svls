@@ -91,6 +91,18 @@ if executable('svls')
 endif
 ```
 
+### Vim/Neovim with [coc.nvim](https://github.com/neoclide/coc.nvim)
+
+In configuration file
+```json
+"languageserver": {
+    "svls": {
+        "command": "svls",
+        "filetypes": ["systemverilog"]
+    }
+}
+```
+
 ### Emacs with [lsp-mode](https://github.com/emacs-lsp/lsp-mode)
 
 ```emacs-lisp
