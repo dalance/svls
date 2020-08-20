@@ -1,5 +1,4 @@
 use crate::config::Config;
-use jsonrpc_core::Result;
 use log::debug;
 use std::collections::HashMap;
 use std::default::Default;
@@ -9,17 +8,27 @@ use std::sync::{Arc, RwLock};
 use sv_parser::parse_sv_str;
 use svlint::config::Config as LintConfig;
 use svlint::linter::Linter;
+use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{async_trait, Client, LanguageServer};
 
-#[derive(Default)]
 pub struct Backend {
+    client: Client,
     root_uri: Arc<RwLock<Option<Url>>>,
     config: Arc<RwLock<Option<Config>>>,
     linter: Arc<RwLock<Option<Linter>>>,
 }
 
 impl Backend {
+    pub fn new(client: Client) -> Self {
+        Backend {
+            client,
+            root_uri: Default::default(),
+            config: Default::default(),
+            linter: Default::default(),
+        }
+    }
+
     fn lint(&self, s: &str) -> Vec<Diagnostic> {
         let mut ret = Vec::new();
 
@@ -111,7 +120,7 @@ impl Backend {
 
 #[async_trait]
 impl LanguageServer for Backend {
-    fn initialize(&self, client: &Client, params: InitializeParams) -> Result<InitializeResult> {
+    async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
         debug!("root_uri: {:?}", params.root_uri);
 
         let config_svls = search_config(&PathBuf::from(".svls.toml"));
@@ -119,7 +128,7 @@ impl LanguageServer for Backend {
         let config = match generate_config(config_svls) {
             Ok(x) => x,
             Err(x) => {
-                client.show_message(MessageType::Warning, &x);
+                self.client.show_message(MessageType::Warning, &x).await;
                 Config::default()
             }
         };
@@ -131,7 +140,7 @@ impl LanguageServer for Backend {
             let linter = match generate_linter(config_svlint) {
                 Ok(x) => x,
                 Err(x) => {
-                    client.show_message(MessageType::Warning, &x);
+                    self.client.show_message(MessageType::Warning, &x).await;
                     Linter::new(LintConfig::new().enable_all())
                 }
             };
@@ -168,26 +177,36 @@ impl LanguageServer for Backend {
         })
     }
 
-    async fn initialized(&self, client: &Client, _: InitializedParams) {
-        client.log_message(MessageType::Info, &format!("server initialized"));
+    async fn initialized(&self, _: InitializedParams) {
+        self.client
+            .log_message(MessageType::Info, &format!("server initialized"))
+            .await;
     }
 
     async fn shutdown(&self) -> Result<()> {
         Ok(())
     }
 
-    async fn did_change_workspace_folders(&self, _: &Client, _: DidChangeWorkspaceFoldersParams) {}
+    async fn did_change_workspace_folders(&self, _: DidChangeWorkspaceFoldersParams) {}
 
-    async fn did_open(&self, client: &Client, params: DidOpenTextDocumentParams) {
+    async fn did_open(&self, params: DidOpenTextDocumentParams) {
         debug!("did_open");
         let diag = self.lint(&params.text_document.text);
-        client.publish_diagnostics(params.text_document.uri, diag, Some(params.text_document.version));
+        self.client
+            .publish_diagnostics(
+                params.text_document.uri,
+                diag,
+                Some(params.text_document.version),
+            )
+            .await;
     }
 
-    async fn did_change(&self, client: &Client, params: DidChangeTextDocumentParams) {
+    async fn did_change(&self, params: DidChangeTextDocumentParams) {
         debug!("did_change");
         let diag = self.lint(&params.content_changes[0].text);
-        client.publish_diagnostics(params.text_document.uri, diag, params.text_document.version);
+        self.client
+            .publish_diagnostics(params.text_document.uri, diag, params.text_document.version)
+            .await;
     }
 }
 
