@@ -1008,7 +1008,7 @@ dependencies = [
 
 [[package]]
 name = "svls"
-version = "0.1.17-pre"
+version = "0.1.17"
 dependencies = [
  "anyhow",
  "futures",

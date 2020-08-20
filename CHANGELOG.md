@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.16...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.1.17...Unreleased) - ReleaseDate
+
+## [v0.1.17](https://github.com/dalance/svls/compare/v0.1.16...v0.1.17) - 2020-08-20
 
 * [Changed] Update tower-lsp
 
