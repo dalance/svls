@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.16...Unreleased) - ReleaseDate
 
+* [Changed] Update tower-lsp
+
 ## [v0.1.16](https://github.com/dalance/svls/compare/v0.1.15...v0.1.16) - 2020-04-03
 
 * [Changed] Update sv-parser and svlint
