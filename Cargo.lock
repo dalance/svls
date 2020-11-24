@@ -549,7 +549,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e012c742e1269f801f6bfe0d1ebf99d7a3f7bc1d65c970bab0e7bee439e31610"
 dependencies = [
  "nom",
- "nom-tracable-macros",
+ "nom-tracable-macros 0.5.2",
+ "nom_locate 1.0.0",
+ "nom_locate 2.0.0",
+]
+
+[[package]]
+name = "nom-tracable"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1875762c6bd471741e093a85fd66f6b9b93b14203b592b66ec7b41b31f553559"
+dependencies = [
+ "nom",
+ "nom-tracable-macros 0.6.2",
  "nom_locate 1.0.0",
  "nom_locate 2.0.0",
 ]
@@ -559,6 +571,16 @@ name = "nom-tracable-macros"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65ad630ff46d4c61da89042f327e6fdf104a6ebb667565727ef0bb294a7c3197"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "nom-tracable-macros"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8b4ba141c87dc4f398331f8772b629d546dc25fb469999ee0ed0c63145c13fb"
 dependencies = [
  "quote",
  "syn",
@@ -950,10 +972,24 @@ checksum = "66f046b3ba519c6e244eccf17f4c3ddc50d98168e64f10298eb8fc1644424920"
 dependencies = [
  "nom",
  "nom-greedyerror",
- "sv-parser-error",
- "sv-parser-parser",
- "sv-parser-pp",
- "sv-parser-syntaxtree",
+ "sv-parser-error 0.6.5",
+ "sv-parser-parser 0.6.5",
+ "sv-parser-pp 0.6.5",
+ "sv-parser-syntaxtree 0.6.5",
+]
+
+[[package]]
+name = "sv-parser"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3357a17f64b3d6f07bff1d4092dcfe0bddfc4d60efc0764a410b0eb814071681"
+dependencies = [
+ "nom",
+ "nom-greedyerror",
+ "sv-parser-error 0.9.0",
+ "sv-parser-parser 0.9.0",
+ "sv-parser-pp 0.9.0",
+ "sv-parser-syntaxtree 0.9.0",
 ]
 
 [[package]]
@@ -961,6 +997,15 @@ name = "sv-parser-error"
 version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4bd09966d1c116bb5c07a6d40e327ccfd6a883dc704e3eb1a9cfbcefe5d7e9ce"
+dependencies = [
+ "thiserror",
+]
+
+[[package]]
+name = "sv-parser-error"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d5bbdfb5dd368d87d2ab6ebbc2eb32e6bb46ca72b9109e2f4d05bf473b09f696"
 dependencies = [
  "thiserror",
 ]
@@ -976,6 +1021,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sv-parser-macros"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85b360de6f0b749a76f030079589ac3a2b6a8fa0a35308a26eb5909ee5eac1d7"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "sv-parser-parser"
 version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -985,11 +1040,28 @@ dependencies = [
  "nom-greedyerror",
  "nom-packrat",
  "nom-recursive",
- "nom-tracable",
+ "nom-tracable 0.5.2",
  "nom_locate 2.0.0",
  "str-concat",
- "sv-parser-macros",
- "sv-parser-syntaxtree",
+ "sv-parser-macros 0.6.5",
+ "sv-parser-syntaxtree 0.6.5",
+]
+
+[[package]]
+name = "sv-parser-parser"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "feaaa0017be3ef0deb50fb7ec1ad8c7efe0adb6f5de9b045085136bd76e47564"
+dependencies = [
+ "nom",
+ "nom-greedyerror",
+ "nom-packrat",
+ "nom-recursive",
+ "nom-tracable 0.6.2",
+ "nom_locate 2.0.0",
+ "str-concat",
+ "sv-parser-macros 0.9.0",
+ "sv-parser-syntaxtree 0.9.0",
 ]
 
 [[package]]
@@ -1000,9 +1072,22 @@ checksum = "52a316255add32907555bddbe1d052a15ac49a1c6ed21a5221818c748e40299e"
 dependencies = [
  "nom",
  "nom-greedyerror",
- "sv-parser-error",
- "sv-parser-parser",
- "sv-parser-syntaxtree",
+ "sv-parser-error 0.6.5",
+ "sv-parser-parser 0.6.5",
+ "sv-parser-syntaxtree 0.6.5",
+]
+
+[[package]]
+name = "sv-parser-pp"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4d624ace1b6e9e54aa3a9cd0c782de1469d74b743c641b7238c393a45db3a53"
+dependencies = [
+ "nom",
+ "nom-greedyerror",
+ "sv-parser-error 0.9.0",
+ "sv-parser-parser 0.9.0",
+ "sv-parser-syntaxtree 0.9.0",
 ]
 
 [[package]]
@@ -1012,7 +1097,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4cbc33bf8abefd2d0fae4a7ca9adedd657695bee44057d3bf0610484515ab3e2"
 dependencies = [
  "regex",
- "sv-parser-macros",
+ "sv-parser-macros 0.6.5",
+ "walkdir",
+]
+
+[[package]]
+name = "sv-parser-syntaxtree"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ec54d60cb07394a3d014a0e45063cbebdc7c85368cee61aa882a13444dfa09eb"
+dependencies = [
+ "regex",
+ "sv-parser-macros 0.9.0",
  "walkdir",
 ]
 
@@ -1031,7 +1127,7 @@ dependencies = [
  "serde_derive",
  "serde_regex",
  "structopt",
- "sv-parser",
+ "sv-parser 0.6.5",
  "term",
  "toml 0.4.10",
  "verilog-filelist-parser",
@@ -1050,7 +1146,7 @@ dependencies = [
  "serde_json",
  "simplelog",
  "structopt",
- "sv-parser",
+ "sv-parser 0.9.0",
  "svlint",
  "tokio",
  "toml 0.5.7",
