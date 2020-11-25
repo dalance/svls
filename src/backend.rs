@@ -60,6 +60,7 @@ impl Backend {
             &HashMap::new(),
             &include_paths,
             false,
+            false,
         );
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
