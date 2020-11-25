@@ -34,6 +34,6 @@ simplelog    = "0.8"
 structopt    = "0.3"
 svlint       = "0.4"
 sv-parser    = "0.9"
-tokio        = {version = "0.2", features = ["io-std", "macros", "test-util"]}
+tokio        = {version = "0.3", features = ["io-std", "macros", "test-util"]}
 toml         = "0.5"
 tower-lsp    = "0.13"
