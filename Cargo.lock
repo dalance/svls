@@ -1014,6 +1014,7 @@ name = "svls"
 version = "0.1.18-pre"
 dependencies = [
  "anyhow",
+ "enquote",
  "futures",
  "log",
  "serde",

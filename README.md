@@ -47,6 +47,7 @@ The example of `.svls.toml` is below:
 ```toml
 [verilog]
 include_paths = ["src/header"]
+defines = ["DEBUG", "VAR=1"]
 
 [option]
 linter = true
@@ -55,6 +56,7 @@ linter = true
 #### `[verilog]` section
 
 `include_paths` is include paths from the root of repository.
+`defines` is define strings.
 
 #### `[option]` section
 

@@ -5,7 +5,7 @@ use std::default::Default;
 use std::env;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
-use sv_parser::parse_sv_str;
+use sv_parser::{parse_sv_str, Define, DefineText};
 use svlint::config::Config as LintConfig;
 use svlint::linter::Linter;
 use tower_lsp::jsonrpc::Result;
@@ -45,19 +45,36 @@ impl Backend {
 
         let config = self.config.read().unwrap();
         let mut include_paths = Vec::new();
+        let mut defines = HashMap::new();
         if let Some(ref config) = *config {
             for path in &config.verilog.include_paths {
                 let mut p = root_uri.clone();
                 p.push(PathBuf::from(path));
                 include_paths.push(p);
             }
+            for define in &config.verilog.defines {
+                let mut define = define.splitn(2, '=');
+                let ident = String::from(define.next().unwrap());
+                let text = if let Some(x) = define.next() {
+                    if let Ok(x) = enquote::unescape(x, None) {
+                        Some(DefineText::new(x, None))
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                };
+                let define = Define::new(ident.clone(), vec![], text);
+                defines.insert(ident, Some(define));
+            }
         };
         debug!("include_paths: {:?}", include_paths);
+        debug!("defines: {:?}", defines);
 
         let parsed = parse_sv_str(
             s,
             &PathBuf::from(""),
-            &HashMap::new(),
+            &defines,
             &include_paths,
             false,
             false,
