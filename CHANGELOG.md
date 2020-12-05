@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.17...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.1.18...Unreleased) - ReleaseDate
+
+## [v0.1.18](https://github.com/dalance/svls/compare/v0.1.17...v0.1.18) - 2020-12-05
 
 * [Added] defines config
 
