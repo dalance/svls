@@ -943,9 +943,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cea598a8837d95514efd32f18f4378a5dcac66e41c944b47fd0b11169a7e8fea"
+checksum = "16eacb320c0a88ba7cbf6e8525fee8715054bfa1072cf1d0c76cd6bcd629981f"
 dependencies = [
  "nom 6.0.1",
  "nom-greedyerror",
@@ -957,18 +957,18 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-error"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31b9ff01e30fdb0a3d9566a4227821efda79766a66ae8d573fc7a6721c37cec7"
+checksum = "96b9a9c4cb5817ab1f058e0d3902e10cfe56ea661660106f7868942e31550e1e"
 dependencies = [
  "thiserror",
 ]
 
 [[package]]
 name = "sv-parser-macros"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f90d3f5cd3ec2ae230f81c60ff5965ab48e3f877df1aae741e1dea7a49b94d1e"
+checksum = "91150147b05f2c8d3abb65806c654f641c51fc21f9ab0ae5588280e988c99a10"
 dependencies = [
  "quote",
  "syn",
@@ -976,9 +976,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-parser"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eec8dc71b0c4eeb5c3cb6f4c655fd9d46260d78830d17967c31dba69e1b7f10a"
+checksum = "3b7e809bfb4318e7156224d720e6c3667c800355f8a7e349487d65ba09ef2c2f"
 dependencies = [
  "nom 6.0.1",
  "nom-greedyerror",
@@ -993,9 +993,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-pp"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ca4c4f0e01c9b28a10d528cbe60cee9b8f75b542db57311946a0ee2304e0dc3"
+checksum = "9a480227aad704a61ec17a684bcd09fb90b925713a3f0c7432ce4edb99dac7b9"
 dependencies = [
  "nom 6.0.1",
  "nom-greedyerror",
@@ -1006,9 +1006,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-syntaxtree"
-version = "0.10.4"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "650ff5c62d4b930af4ab247a18b1f9e50e41e1dbf0aecd4f066229924c236744"
+checksum = "4cda512944e9fca823e4d54c10cd5eac178fd543ec1f6e3c85ecbfbf5dbe0955"
 dependencies = [
  "regex",
  "sv-parser-macros",
