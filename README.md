@@ -3,7 +3,6 @@
 SystemVerilog language server
 
 [![Actions Status](https://github.com/dalance/svls/workflows/Regression/badge.svg)](https://github.com/dalance/svls/actions)
-[![Snap Status](https://build.snapcraft.io/badge/dalance/svls.svg)](https://build.snapcraft.io/user/dalance/svls)
 
 [![Crates.io](https://img.shields.io/crates/v/svls.svg)](https://crates.io/crates/svls)
 [![svlint](https://snapcraft.io/svls/badge.svg)](https://snapcraft.io/svls)
