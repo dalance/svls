@@ -33,7 +33,7 @@ serde_derive = "1"
 serde_json   = "1"
 simplelog    = "0.9"
 structopt    = "0.3"
-svlint       = "0.4.16"
+svlint       = "0.4.17"
 sv-parser    = "0.10.8"
 tokio        = {version = "0.2", features = ["io-std", "macros", "test-util"]}
 toml         = "0.5"
