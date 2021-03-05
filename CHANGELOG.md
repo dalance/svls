@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.25...Unreleased) - ReleaseDate
 
+* [Changed] Update sv-parser and svlint
+
 ## [v0.1.25](https://github.com/dalance/svls/compare/v0.1.24...v0.1.25) - 2021-01-29
 
 * [Changed] Update sv-parser and svlint
