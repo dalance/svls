@@ -1,0 +1,24 @@
+version: 2
+updates:
+- package-ecosystem: cargo
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "20:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: tokio
+    versions:
+    - ">= 0.3.a, < 0.4"
+  - dependency-name: tokio
+    versions:
+    - ">= 1.a, < 2"
+  - dependency-name: sv-parser
+    versions:
+    - 0.11.0
+  - dependency-name: svlint
+    versions:
+    - 0.4.17
+  - dependency-name: serde_json
+    versions:
+    - 1.0.63
