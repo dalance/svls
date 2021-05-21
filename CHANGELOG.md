@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.27...Unreleased) - ReleaseDate
 
+* [Changed] Update tower-lsp [#71](https://github.com/dalance/svls/pull/71)
+
 ## [v0.1.27](https://github.com/dalance/svls/compare/v0.1.26...v0.1.27) - 2021-03-05
 
 * [Changed] Update sv-parser and svlint
