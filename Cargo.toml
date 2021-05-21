@@ -35,9 +35,9 @@ simplelog    = "0.10"
 structopt    = "0.3"
 svlint       = "0.4.18"
 sv-parser    = "0.11.1"
-tokio        = {version = "0.2", features = ["io-std", "macros", "test-util"]}
+tokio        = {version = "1.6", features = ["io-std", "macros", "rt", "test-util"]}
 toml         = "0.5"
-tower-lsp    = "0.13"
+tower-lsp    = "0.14"
 
 #[patch.crates-io]
 #sv-parser = {path = "../sv-parser/sv-parser"}

@@ -93,7 +93,7 @@ impl Backend {
                             ret.push(Diagnostic::new(
                                 Range::new(
                                     Position::new(line, col),
-                                    Position::new(line, col + failed.len as u64),
+                                    Position::new(line, col + failed.len as u32),
                                 ),
                                 Some(DiagnosticSeverity::Warning),
                                 Some(NumberOrString::String(String::from(failed.name))),
@@ -113,7 +113,7 @@ impl Backend {
                         if path == PathBuf::from("") {
                             let (line, col) = get_position(s, pos);
                             let line_end = get_line_end(s, pos);
-                            let len = line_end - pos as u64;
+                            let len = line_end - pos as u32;
                             ret.push(Diagnostic::new(
                                 Range::new(
                                     Position::new(line, col),
@@ -178,13 +178,14 @@ impl LanguageServer for Backend {
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
                     TextDocumentSyncKind::Full,
                 )),
-                workspace: Some(WorkspaceCapability {
-                    workspace_folders: Some(WorkspaceFolderCapability {
+                workspace: Some(WorkspaceServerCapabilities {
+                    workspace_folders: Some(WorkspaceFoldersServerCapabilities {
                         supported: Some(true),
                         change_notifications: Some(
-                            WorkspaceFolderCapabilityChangeNotifications::Bool(true),
+                            OneOf::Left(true),
                         ),
                     }),
+                    file_operations: None,
                 }),
                 ..ServerCapabilities::default()
             },
@@ -223,7 +224,7 @@ impl LanguageServer for Backend {
         debug!("did_change");
         let diag = self.lint(&params.content_changes[0].text);
         self.client
-            .publish_diagnostics(params.text_document.uri, diag, params.text_document.version)
+            .publish_diagnostics(params.text_document.uri, diag, Some(params.text_document.version))
             .await;
     }
 }
@@ -286,7 +287,7 @@ fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, Strin
     }
 }
 
-fn get_position(s: &str, pos: usize) -> (u64, u64) {
+fn get_position(s: &str, pos: usize) -> (u32, u32) {
     let mut line = 0;
     let mut col = 0;
     let mut p = 0;
@@ -306,7 +307,7 @@ fn get_position(s: &str, pos: usize) -> (u64, u64) {
     (line, col)
 }
 
-fn get_line_end(s: &str, pos: usize) -> u64 {
+fn get_line_end(s: &str, pos: usize) -> u32 {
     let mut p = pos;
     while p < s.len() {
         if let Some(c) = s.get(p..p + 1) {
@@ -316,5 +317,5 @@ fn get_line_end(s: &str, pos: usize) -> u64 {
         }
         p += 1;
     }
-    p as u64
+    p as u32
 }
