@@ -927,7 +927,7 @@ dependencies = [
 
 [[package]]
 name = "svls"
-version = "0.1.28-pre"
+version = "0.1.28"
 dependencies = [
  "anyhow",
  "enquote",
