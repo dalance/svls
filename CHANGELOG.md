@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.1.28...Unreleased) - ReleaseDate
 
+* [Breaking Changed] Update svlint (see [CHANGELOG of svlint](https://github.com/dalance/svlint/compare/v0.4.18...v0.5.0) )
+* [Changed] Replace structopt with clap
+
 ## [v0.1.28](https://github.com/dalance/svls/compare/v0.1.27...v0.1.28) - 2021-05-21
 
 * [Changed] Update tower-lsp [#71](https://github.com/dalance/svls/pull/71)
