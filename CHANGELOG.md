@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.1.28...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.2.0...Unreleased) - ReleaseDate
+
+## [v0.2.0](https://github.com/dalance/svls/compare/v0.1.28...v0.2.0) - 2022-01-18
 
 * [Breaking Changed] Update svlint (see [CHANGELOG of svlint](https://github.com/dalance/svlint/compare/v0.4.18...v0.5.0) )
 * [Changed] Replace structopt with clap

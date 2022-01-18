@@ -1,5 +1,5 @@
 name: svls
-version: &version v0.1.28
+version: &version v0.2.0
 summary: SystemVerilog language server
 description: |
   A language server supporting SystemVerilog ( IEEE Std. 1800-2017 )
