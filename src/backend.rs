@@ -152,7 +152,7 @@ impl LanguageServer for Backend {
         };
 
         if config.option.linter {
-            let config_svlint = search_config(&PathBuf::from(".svlint.toml"));
+            let config_svlint = search_config_svlint(&PathBuf::from(".svlint.toml"));
             debug!("config_svlint: {:?}", config_svlint);
 
             let linter = match generate_linter(config_svlint) {
@@ -241,6 +241,19 @@ fn search_config(config: &Path) -> Option<PathBuf> {
     } else {
         None
     }
+}
+
+fn search_config_svlint(config: &Path) -> Option<PathBuf> {
+    if let Ok(c) = env::var("SVLINT_CONFIG") {
+        let candidate = Path::new(&c);
+        if candidate.exists() {
+            return Some(candidate.to_path_buf());
+        } else {
+            debug!("SVLINT_CONFIG=\"{}\" does not exist. Searching hierarchically.", c);
+        }
+    }
+
+    search_config(config)
 }
 
 fn generate_config(config: Option<PathBuf>) -> std::result::Result<Config, String> {
