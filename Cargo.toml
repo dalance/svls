@@ -37,7 +37,7 @@ svlint       = "0.5.1"
 sv-parser    = "0.11.1"
 tokio        = {version = "1.6", features = ["io-std", "macros", "rt", "test-util"]}
 toml         = "0.5"
-tower-lsp    = "0.14"
+tower-lsp    = "0.16"
 
 #[patch.crates-io]
 #sv-parser = {path = "../sv-parser/sv-parser"}
