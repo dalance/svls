@@ -3,6 +3,7 @@
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.2.0...Unreleased) - ReleaseDate
 
 * [Added] take svlint configuration file from environment variable [#120](https://github.com/dalance/svls/pull/120)
+* [Changed] Update svlint
 
 ## [v0.2.0](https://github.com/dalance/svls/compare/v0.1.28...v0.2.0) - 2022-01-18
 
