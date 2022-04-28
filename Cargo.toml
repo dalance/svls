@@ -25,7 +25,7 @@ pre-release-replacements    = [
 
 [dependencies]
 anyhow       = "1"
-clap         = {version = "3.1.10", features = ["derive"]}
+clap         = {version = "3.1.12", features = ["derive"]}
 enquote      = "1"
 futures      = "0.3"
 log          = "0.4"
