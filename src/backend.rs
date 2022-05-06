@@ -108,27 +108,24 @@ impl Backend {
             }
             Err(x) => {
                 debug!("parse_error: {:?}", x);
-                match x {
-                    sv_parser::Error::Parse(Some((path, pos))) => {
-                        if path == PathBuf::from("") {
-                            let (line, col) = get_position(s, pos);
-                            let line_end = get_line_end(s, pos);
-                            let len = line_end - pos as u32;
-                            ret.push(Diagnostic::new(
-                                Range::new(
-                                    Position::new(line, col),
-                                    Position::new(line, col + len),
-                                ),
-                                Some(DiagnosticSeverity::ERROR),
-                                None,
-                                Some(String::from("svls")),
-                                String::from("parse error"),
-                                None,
-                                None,
-                            ));
-                        }
+                if let sv_parser::Error::Parse(Some((path, pos))) = x {
+                    if path.as_path() == Path::new("") {
+                        let (line, col) = get_position(s, pos);
+                        let line_end = get_line_end(s, pos);
+                        let len = line_end - pos as u32;
+                        ret.push(Diagnostic::new(
+                            Range::new(
+                                Position::new(line, col),
+                                Position::new(line, col + len),
+                            ),
+                            Some(DiagnosticSeverity::ERROR),
+                            None,
+                            Some(String::from("svls")),
+                            String::from("parse error"),
+                            None,
+                            None,
+                        ));
                     }
-                    _ => (),
                 }
             }
         }
