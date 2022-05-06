@@ -262,25 +262,22 @@ fn search_config_svlint(config: &Path) -> Option<PathBuf> {
 }
 
 fn generate_config(config: Option<PathBuf>) -> std::result::Result<Config, String> {
-    if let Some(config) = config {
-        if let Ok(s) = std::fs::read_to_string(&config) {
-            if let Ok(config) = toml::from_str(&s) {
-                Ok(config)
-            } else {
-                Err(format!(
-                    "Failed to parse {}. Enable all lint rules.",
-                    config.to_string_lossy()
-                ))
-            }
-        } else {
-            Err(format!(
-                "Failed to read {}. Enable all lint rules.",
-                config.to_string_lossy()
-            ))
-        }
-    } else {
-        Ok(Config::default())
-    }
+    let path = match config {
+        Some(c) => c,
+        _ => return Ok(Default::default()),
+    };
+    let text = std::fs::read_to_string(&path).map_err(|_| {
+        format!(
+            "Failed to read {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    toml::from_str(&text).map_err(|_| {
+        format!(
+            "Failed to parse {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })
 }
 
 fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, String> {
