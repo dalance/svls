@@ -181,9 +181,7 @@ impl LanguageServer for Backend {
                 workspace: Some(WorkspaceServerCapabilities {
                     workspace_folders: Some(WorkspaceFoldersServerCapabilities {
                         supported: Some(true),
-                        change_notifications: Some(
-                            OneOf::Left(true),
-                        ),
+                        change_notifications: Some(OneOf::Left(true)),
                     }),
                     file_operations: None,
                 }),
@@ -224,7 +222,11 @@ impl LanguageServer for Backend {
         debug!("did_change");
         let diag = self.lint(&params.content_changes[0].text);
         self.client
-            .publish_diagnostics(params.text_document.uri, diag, Some(params.text_document.version))
+            .publish_diagnostics(
+                params.text_document.uri,
+                diag,
+                Some(params.text_document.version),
+            )
             .await;
     }
 }
@@ -249,7 +251,10 @@ fn search_config_svlint(config: &Path) -> Option<PathBuf> {
         if candidate.exists() {
             return Some(candidate.to_path_buf());
         } else {
-            debug!("SVLINT_CONFIG=\"{}\" does not exist. Searching hierarchically.", c);
+            debug!(
+                "SVLINT_CONFIG=\"{}\" does not exist. Searching hierarchically.",
+                c
+            );
         }
     }
 
@@ -279,25 +284,21 @@ fn generate_config(config: Option<PathBuf>) -> std::result::Result<Config, Strin
 }
 
 fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, String> {
-    if let Some(config) = config {
-        if let Ok(s) = std::fs::read_to_string(&config) {
-            if let Ok(config) = toml::from_str(&s) {
-                Ok(Linter::new(config))
-            } else {
-                Err(format!(
-                    "Failed to parse {}. Enable all lint rules.",
-                    config.to_string_lossy()
-                ))
-            }
-        } else {
-            Err(format!(
-                "Failed to read {}. Enable all lint rules.",
-                config.to_string_lossy()
-            ))
-        }
-    } else {
-        Err(String::from(".svlint.toml is not found. Enable all lint rules."))
-    }
+    let path =
+        config.ok_or_else(|| String::from(".svlint.toml is not found. Enable all lint rules."))?;
+    let text = std::fs::read_to_string(&path).map_err(|_| {
+        format!(
+            "Failed to read {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    let parsed = toml::from_str(&text).map_err(|_| {
+        format!(
+            "Failed to parse {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    Ok(Linter::new(parsed))
 }
 
 fn get_position(s: &str, pos: usize) -> (u32, u32) {
