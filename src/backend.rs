@@ -232,17 +232,15 @@ impl LanguageServer for Backend {
 }
 
 fn search_config(config: &Path) -> Option<PathBuf> {
-    if let Ok(current) = env::current_dir() {
-        for dir in current.ancestors() {
-            let candidate = dir.join(config);
-            if candidate.exists() {
-                return Some(candidate);
-            }
+    let curr = env::current_dir().ok()?;
+    curr.ancestors().find_map(|dir| {
+        let candidate = dir.join(config);
+        if candidate.exists() {
+            Some(candidate)
+        } else {
+            None
         }
-        None
-    } else {
-        None
-    }
+    })
 }
 
 fn search_config_svlint(config: &Path) -> Option<PathBuf> {
