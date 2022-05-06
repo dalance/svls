@@ -55,15 +55,10 @@ impl Backend {
             for define in &config.verilog.defines {
                 let mut define = define.splitn(2, '=');
                 let ident = String::from(define.next().unwrap());
-                let text = if let Some(x) = define.next() {
-                    if let Ok(x) = enquote::unescape(x, None) {
-                        Some(DefineText::new(x, None))
-                    } else {
-                        None
-                    }
-                } else {
-                    None
-                };
+                let text = define
+                    .next()
+                    .and_then(|x| enquote::unescape(x, None).ok())
+                    .map(|x| DefineText::new(x, None));
                 let define = Define::new(ident.clone(), vec![], text);
                 defines.insert(ident, Some(define));
             }
@@ -114,10 +109,7 @@ impl Backend {
                         let line_end = get_line_end(s, pos);
                         let len = line_end - pos as u32;
                         ret.push(Diagnostic::new(
-                            Range::new(
-                                Position::new(line, col),
-                                Position::new(line, col + len),
-                            ),
+                            Range::new(Position::new(line, col), Position::new(line, col + len)),
                             Some(DiagnosticSeverity::ERROR),
                             None,
                             Some(String::from("svls")),
