@@ -95,7 +95,7 @@ impl Backend {
                                     Position::new(line, col),
                                     Position::new(line, col + failed.len as u32),
                                 ),
-                                Some(DiagnosticSeverity::Warning),
+                                Some(DiagnosticSeverity::WARNING),
                                 Some(NumberOrString::String(String::from(failed.name))),
                                 Some(String::from("svls")),
                                 String::from(failed.hint),
@@ -119,7 +119,7 @@ impl Backend {
                                     Position::new(line, col),
                                     Position::new(line, col + len),
                                 ),
-                                Some(DiagnosticSeverity::Error),
+                                Some(DiagnosticSeverity::ERROR),
                                 None,
                                 Some(String::from("svls")),
                                 String::from("parse error"),
@@ -146,7 +146,7 @@ impl LanguageServer for Backend {
         let config = match generate_config(config_svls) {
             Ok(x) => x,
             Err(x) => {
-                self.client.show_message(MessageType::Warning, &x).await;
+                self.client.show_message(MessageType::WARNING, &x).await;
                 Config::default()
             }
         };
@@ -158,7 +158,7 @@ impl LanguageServer for Backend {
             let linter = match generate_linter(config_svlint) {
                 Ok(x) => x,
                 Err(x) => {
-                    self.client.show_message(MessageType::Warning, &x).await;
+                    self.client.show_message(MessageType::WARNING, &x).await;
                     Linter::new(LintConfig::new().enable_all())
                 }
             };
@@ -176,7 +176,7 @@ impl LanguageServer for Backend {
         Ok(InitializeResult {
             capabilities: ServerCapabilities {
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
-                    TextDocumentSyncKind::Full,
+                    TextDocumentSyncKind::FULL,
                 )),
                 workspace: Some(WorkspaceServerCapabilities {
                     workspace_folders: Some(WorkspaceFoldersServerCapabilities {
@@ -198,7 +198,7 @@ impl LanguageServer for Backend {
 
     async fn initialized(&self, _: InitializedParams) {
         self.client
-            .log_message(MessageType::Info, &format!("server initialized"))
+            .log_message(MessageType::INFO, &format!("server initialized"))
             .await;
     }
 
