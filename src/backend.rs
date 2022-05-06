@@ -96,9 +96,9 @@ impl Backend {
                                     Position::new(line, col + failed.len as u32),
                                 ),
                                 Some(DiagnosticSeverity::WARNING),
-                                Some(NumberOrString::String(String::from(failed.name))),
+                                Some(NumberOrString::String(failed.name)),
                                 Some(String::from("svls")),
-                                String::from(failed.hint),
+                                failed.hint,
                                 None,
                                 None,
                             ));
@@ -198,7 +198,7 @@ impl LanguageServer for Backend {
 
     async fn initialized(&self, _: InitializedParams) {
         self.client
-            .log_message(MessageType::INFO, &format!("server initialized"))
+            .log_message(MessageType::INFO, "server initialized")
             .await;
     }
 
@@ -296,7 +296,7 @@ fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, Strin
             ))
         }
     } else {
-        Err(format!(".svlint.toml is not found. Enable all lint rules."))
+        Err(String::from(".svlint.toml is not found. Enable all lint rules."))
     }
 }
 
