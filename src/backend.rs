@@ -55,15 +55,10 @@ impl Backend {
             for define in &config.verilog.defines {
                 let mut define = define.splitn(2, '=');
                 let ident = String::from(define.next().unwrap());
-                let text = if let Some(x) = define.next() {
-                    if let Ok(x) = enquote::unescape(x, None) {
-                        Some(DefineText::new(x, None))
-                    } else {
-                        None
-                    }
-                } else {
-                    None
-                };
+                let text = define
+                    .next()
+                    .and_then(|x| enquote::unescape(x, None).ok())
+                    .map(|x| DefineText::new(x, None));
                 let define = Define::new(ident.clone(), vec![], text);
                 defines.insert(ident, Some(define));
             }
@@ -95,10 +90,10 @@ impl Backend {
                                     Position::new(line, col),
                                     Position::new(line, col + failed.len as u32),
                                 ),
-                                Some(DiagnosticSeverity::Warning),
-                                Some(NumberOrString::String(String::from(failed.name))),
+                                Some(DiagnosticSeverity::WARNING),
+                                Some(NumberOrString::String(failed.name)),
                                 Some(String::from("svls")),
-                                String::from(failed.hint),
+                                failed.hint,
                                 None,
                                 None,
                             ));
@@ -108,27 +103,21 @@ impl Backend {
             }
             Err(x) => {
                 debug!("parse_error: {:?}", x);
-                match x {
-                    sv_parser::Error::Parse(Some((path, pos))) => {
-                        if path == PathBuf::from("") {
-                            let (line, col) = get_position(s, pos);
-                            let line_end = get_line_end(s, pos);
-                            let len = line_end - pos as u32;
-                            ret.push(Diagnostic::new(
-                                Range::new(
-                                    Position::new(line, col),
-                                    Position::new(line, col + len),
-                                ),
-                                Some(DiagnosticSeverity::Error),
-                                None,
-                                Some(String::from("svls")),
-                                String::from("parse error"),
-                                None,
-                                None,
-                            ));
-                        }
+                if let sv_parser::Error::Parse(Some((path, pos))) = x {
+                    if path.as_path() == Path::new("") {
+                        let (line, col) = get_position(s, pos);
+                        let line_end = get_line_end(s, pos);
+                        let len = line_end - pos as u32;
+                        ret.push(Diagnostic::new(
+                            Range::new(Position::new(line, col), Position::new(line, col + len)),
+                            Some(DiagnosticSeverity::ERROR),
+                            None,
+                            Some(String::from("svls")),
+                            String::from("parse error"),
+                            None,
+                            None,
+                        ));
                     }
-                    _ => (),
                 }
             }
         }
@@ -146,7 +135,7 @@ impl LanguageServer for Backend {
         let config = match generate_config(config_svls) {
             Ok(x) => x,
             Err(x) => {
-                self.client.show_message(MessageType::Warning, &x).await;
+                self.client.show_message(MessageType::WARNING, &x).await;
                 Config::default()
             }
         };
@@ -158,7 +147,7 @@ impl LanguageServer for Backend {
             let linter = match generate_linter(config_svlint) {
                 Ok(x) => x,
                 Err(x) => {
-                    self.client.show_message(MessageType::Warning, &x).await;
+                    self.client.show_message(MessageType::WARNING, &x).await;
                     Linter::new(LintConfig::new().enable_all())
                 }
             };
@@ -176,14 +165,12 @@ impl LanguageServer for Backend {
         Ok(InitializeResult {
             capabilities: ServerCapabilities {
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
-                    TextDocumentSyncKind::Full,
+                    TextDocumentSyncKind::FULL,
                 )),
                 workspace: Some(WorkspaceServerCapabilities {
                     workspace_folders: Some(WorkspaceFoldersServerCapabilities {
                         supported: Some(true),
-                        change_notifications: Some(
-                            OneOf::Left(true),
-                        ),
+                        change_notifications: Some(OneOf::Left(true)),
                     }),
                     file_operations: None,
                 }),
@@ -198,7 +185,7 @@ impl LanguageServer for Backend {
 
     async fn initialized(&self, _: InitializedParams) {
         self.client
-            .log_message(MessageType::Info, &format!("server initialized"))
+            .log_message(MessageType::INFO, "server initialized")
             .await;
     }
 
@@ -224,23 +211,25 @@ impl LanguageServer for Backend {
         debug!("did_change");
         let diag = self.lint(&params.content_changes[0].text);
         self.client
-            .publish_diagnostics(params.text_document.uri, diag, Some(params.text_document.version))
+            .publish_diagnostics(
+                params.text_document.uri,
+                diag,
+                Some(params.text_document.version),
+            )
             .await;
     }
 }
 
 fn search_config(config: &Path) -> Option<PathBuf> {
-    if let Ok(current) = env::current_dir() {
-        for dir in current.ancestors() {
-            let candidate = dir.join(config);
-            if candidate.exists() {
-                return Some(candidate);
-            }
+    let curr = env::current_dir().ok()?;
+    curr.ancestors().find_map(|dir| {
+        let candidate = dir.join(config);
+        if candidate.exists() {
+            Some(candidate)
+        } else {
+            None
         }
-        None
-    } else {
-        None
-    }
+    })
 }
 
 fn search_config_svlint(config: &Path) -> Option<PathBuf> {
@@ -249,7 +238,10 @@ fn search_config_svlint(config: &Path) -> Option<PathBuf> {
         if candidate.exists() {
             return Some(candidate.to_path_buf());
         } else {
-            debug!("SVLINT_CONFIG=\"{}\" does not exist. Searching hierarchically.", c);
+            debug!(
+                "SVLINT_CONFIG=\"{}\" does not exist. Searching hierarchically.",
+                c
+            );
         }
     }
 
@@ -257,47 +249,40 @@ fn search_config_svlint(config: &Path) -> Option<PathBuf> {
 }
 
 fn generate_config(config: Option<PathBuf>) -> std::result::Result<Config, String> {
-    if let Some(config) = config {
-        if let Ok(s) = std::fs::read_to_string(&config) {
-            if let Ok(config) = toml::from_str(&s) {
-                Ok(config)
-            } else {
-                Err(format!(
-                    "Failed to parse {}. Enable all lint rules.",
-                    config.to_string_lossy()
-                ))
-            }
-        } else {
-            Err(format!(
-                "Failed to read {}. Enable all lint rules.",
-                config.to_string_lossy()
-            ))
-        }
-    } else {
-        Ok(Config::default())
-    }
+    let path = match config {
+        Some(c) => c,
+        _ => return Ok(Default::default()),
+    };
+    let text = std::fs::read_to_string(&path).map_err(|_| {
+        format!(
+            "Failed to read {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    toml::from_str(&text).map_err(|_| {
+        format!(
+            "Failed to parse {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })
 }
 
 fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, String> {
-    if let Some(config) = config {
-        if let Ok(s) = std::fs::read_to_string(&config) {
-            if let Ok(config) = toml::from_str(&s) {
-                Ok(Linter::new(config))
-            } else {
-                Err(format!(
-                    "Failed to parse {}. Enable all lint rules.",
-                    config.to_string_lossy()
-                ))
-            }
-        } else {
-            Err(format!(
-                "Failed to read {}. Enable all lint rules.",
-                config.to_string_lossy()
-            ))
-        }
-    } else {
-        Err(format!(".svlint.toml is not found. Enable all lint rules."))
-    }
+    let path =
+        config.ok_or_else(|| String::from(".svlint.toml is not found. Enable all lint rules."))?;
+    let text = std::fs::read_to_string(&path).map_err(|_| {
+        format!(
+            "Failed to read {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    let parsed = toml::from_str(&text).map_err(|_| {
+        format!(
+            "Failed to parse {}. Enable all lint rules.",
+            path.to_string_lossy()
+        )
+    })?;
+    Ok(Linter::new(parsed))
 }
 
 fn get_position(s: &str, pos: usize) -> (u32, u32) {
