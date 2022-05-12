@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.2.1...Unreleased) - ReleaseDate
 
+* [Fixed] Svls does not work with svlint special comments [#147](https://github.com/dalance/svls/issues/147)
+
 ## [v0.2.1](https://github.com/dalance/svls/compare/v0.2.0...v0.2.1) - 2022-04-07
 
 * [Added] take svlint configuration file from environment variable [#120](https://github.com/dalance/svls/pull/120)

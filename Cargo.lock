@@ -907,9 +907,9 @@ dependencies = [
 
 [[package]]
 name = "svlint"
-version = "0.5.2"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36b02bae3490ee332bdf8acfa710f6588f5a51acb99ac55ad5bc2c8dc44d331e"
+checksum = "4386915a5955d386749d2abf4d09c79603081f9b3c43e269f9f5d67735f26792"
 dependencies = [
  "anyhow",
  "clap",
