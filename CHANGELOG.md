@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.2.2...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.2.3...Unreleased) - ReleaseDate
+
+## [v0.2.3](https://github.com/dalance/svls/compare/v0.2.2...v0.2.3) - 2022-06-07
 
 * [Changed] Update svlint
 
