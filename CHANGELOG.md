@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.2.2...Unreleased) - ReleaseDate
 
+* [Changed] Update svlint
+
 ## [v0.2.2](https://github.com/dalance/svls/compare/v0.2.1...v0.2.2) - 2022-05-12
 
 * [Fixed] Svls does not work with svlint special comments [#147](https://github.com/dalance/svls/issues/147)
