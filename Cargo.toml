@@ -34,7 +34,7 @@ svlint       = "0.6.1"
 sv-parser    = "0.12.2"
 tokio        = {version = "1.6", features = ["io-std", "macros", "rt", "test-util"]}
 toml         = "0.5"
-tower-lsp    = "0.18"
+tower-lsp    = "0.19"
 
 [profile.release]
 codegen-units = 1
