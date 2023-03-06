@@ -29,7 +29,7 @@ impl Backend {
         }
     }
 
-    fn lint(&self, s: &str, fp: &str) -> Vec<Diagnostic> {
+    fn lint(&self, s: &str, path: &Path) -> Vec<Diagnostic> {
         let mut ret = Vec::new();
 
         let root_uri = self.root_uri.read().unwrap();
@@ -68,7 +68,7 @@ impl Backend {
 
         let parsed = parse_sv_str(
             s,
-            Path::new(fp).strip_prefix(root_uri).map_err(|_| ()).unwrap(),
+            path.strip_prefix(root_uri).map_err(|_| ()).unwrap(),
             &defines,
             &include_paths,
             false,
@@ -194,7 +194,8 @@ impl LanguageServer for Backend {
 
     async fn did_open(&self, params: DidOpenTextDocumentParams) {
         debug!("did_open");
-        let diag = self.lint(&params.text_document.text, params.text_document.uri.path());
+        let path = params.text_document.uri.to_file_path().unwrap();
+        let diag = self.lint(&params.text_document.text, &path);
         self.client
             .publish_diagnostics(
                 params.text_document.uri,
@@ -206,7 +207,8 @@ impl LanguageServer for Backend {
 
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
         debug!("did_change");
-        let diag = self.lint(&params.content_changes[0].text, params.text_document.uri.path());
+        let path = params.text_document.uri.to_file_path().unwrap();
+        let diag = self.lint(&params.content_changes[0].text, &path);
         self.client
             .publish_diagnostics(
                 params.text_document.uri,
