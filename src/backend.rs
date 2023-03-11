@@ -66,14 +66,9 @@ impl Backend {
         debug!("include_paths: {:?}", include_paths);
         debug!("defines: {:?}", defines);
 
-        let parsed = parse_sv_str(
-            s,
-            path.strip_prefix(root_uri).map_err(|_| ()).unwrap(),
-            &defines,
-            &include_paths,
-            false,
-            false,
-        );
+        let src_path = path.strip_prefix(root_uri).map_err(|_| ()).unwrap();
+
+        let parsed = parse_sv_str(s, &src_path, &defines, &include_paths, false, false);
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
                 let mut linter = self.linter.write().unwrap();
@@ -81,6 +76,9 @@ impl Backend {
                     for event in syntax_tree.into_iter().event() {
                         for failed in linter.check(&syntax_tree, &event) {
                             debug!("{:?}", failed);
+                            if failed.path != src_path {
+                                continue;
+                            }
                             let (line, col) = get_position(s, failed.beg);
                             ret.push(Diagnostic::new(
                                 Range::new(
