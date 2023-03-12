@@ -66,7 +66,11 @@ impl Backend {
         debug!("include_paths: {:?}", include_paths);
         debug!("defines: {:?}", defines);
 
-        let src_path = path.strip_prefix(root_uri).map_err(|_| ()).unwrap();
+        let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
+            x.to_path_buf()
+        } else {
+            PathBuf::from("")
+        };
 
         let parsed = parse_sv_str(s, &src_path, &defines, &include_paths, false, false);
         match parsed {
