@@ -103,7 +103,7 @@ impl Backend {
             Err(x) => {
                 debug!("parse_error: {:?}", x);
                 if let sv_parser::Error::Parse(Some((path, pos))) = x {
-                    if path.as_path() == Path::new("") {
+                    if path.as_path() == src_path {
                         let (line, col) = get_position(s, pos);
                         let line_end = get_line_end(s, pos);
                         let len = line_end - pos as u32;
