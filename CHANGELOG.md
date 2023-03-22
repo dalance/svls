@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/dalance/svls/compare/v0.2.7...Unreleased) - ReleaseDate
 
+* [Fixed] Fix invalid diag [#202](https://github.com/dalance/svls/pull/202)
+
 ## [v0.2.7](https://github.com/dalance/svls/compare/v0.2.6...v0.2.7) - 2023-03-06
 
 ## [v0.2.6](https://github.com/dalance/svls/compare/v0.2.5...v0.2.6) - 2022-12-02
