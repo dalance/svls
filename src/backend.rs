@@ -66,14 +66,13 @@ impl Backend {
         debug!("include_paths: {:?}", include_paths);
         debug!("defines: {:?}", defines);
 
-        let parsed = parse_sv_str(
-            s,
-            path.strip_prefix(root_uri).map_err(|_| ()).unwrap(),
-            &defines,
-            &include_paths,
-            false,
-            false,
-        );
+        let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
+            x.to_path_buf()
+        } else {
+            PathBuf::from("")
+        };
+
+        let parsed = parse_sv_str(s, &src_path, &defines, &include_paths, false, false);
         match parsed {
             Ok((syntax_tree, _new_defines)) => {
                 let mut linter = self.linter.write().unwrap();
@@ -81,6 +80,9 @@ impl Backend {
                     for event in syntax_tree.into_iter().event() {
                         for failed in linter.check(&syntax_tree, &event) {
                             debug!("{:?}", failed);
+                            if failed.path != src_path {
+                                continue;
+                            }
                             let (line, col) = get_position(s, failed.beg);
                             ret.push(Diagnostic::new(
                                 Range::new(
@@ -101,7 +103,7 @@ impl Backend {
             Err(x) => {
                 debug!("parse_error: {:?}", x);
                 if let sv_parser::Error::Parse(Some((path, pos))) = x {
-                    if path.as_path() == Path::new("") {
+                    if path.as_path() == src_path {
                         let (line, col) = get_position(s, pos);
                         let line_end = get_line_end(s, pos);
                         let len = line_end - pos as u32;
