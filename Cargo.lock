@@ -162,7 +162,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "391b56fbd302e585b7a9494fb70e40949567b1cf9003a8e4a6041a1687c26573"
 dependencies = [
  "cfg-if",
- "hashbrown 0.12.1",
+ "hashbrown",
  "lock_api",
 ]
 
@@ -302,12 +302,6 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.11.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab5ef0d4909ef3724cc8cce6ccc8572c5c817592e9285f5464f8e86f8bd3726e"
-
-[[package]]
-name = "hashbrown"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "db0d4cf898abf0081f964436dc980e96670a0f36863e4b83aaacdb65c9d7ccc3"
@@ -346,12 +340,12 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "1.8.1"
+version = "1.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f647032dfaa1f8b6dc29bd3edb7bbef4861b8b8007ebb118d6db284fd59f6ee"
+checksum = "1885e79c1fc4b10f0e172c475f458b7f7b93061064d98c3293e98c5ba0c8b399"
 dependencies = [
  "autocfg",
- "hashbrown 0.11.2",
+ "hashbrown",
 ]
 
 [[package]]
@@ -797,6 +791,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_spanned"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0efd8caf556a6cebd3b285caf480045fcc1ac04f6bd786b09a6f11af30c4fcf4"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "simplelog"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -842,9 +845,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed6567e4ff8c8f26fbd561e8797f2bf658462b68346d481d9a53f9390873688d"
+checksum = "890c3bb1c75da653ff5b30e6c6ec627a654cb4a17ba0cf8674d9f489b7962da9"
 dependencies = [
  "nom 6.1.2",
  "nom-greedyerror",
@@ -856,18 +859,18 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-error"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8ab9840f6af470b46a27ec709c5bdba054d0fe57d408ba550d99b6de027b143"
+checksum = "4742a533d5a78efa6c839e3912793b664ceee3d3177f03f16ef675a4f2428476"
 dependencies = [
  "thiserror",
 ]
 
 [[package]]
 name = "sv-parser-macros"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60599265d86a4647a32e97f5c9ae758c1ac82402a6e0d123347384997148ba6a"
+checksum = "4e694ddf3d28d76a0a2254f25f0bd33bfe8017220d7e90d46f6861802856a466"
 dependencies = [
  "quote",
  "syn 1.0.104",
@@ -875,9 +878,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-parser"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4628479b05874500c1227228f481e04e9aaf858bc43eecd87fbbf4b6999b7269"
+checksum = "246b3acb67407ac558455dcb948d6c4c875e2bcb4d98d667c17d17ff3e6bc415"
 dependencies = [
  "nom 6.1.2",
  "nom-greedyerror",
@@ -892,9 +895,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-pp"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db489604d13d9f630173a477357a0010d310597df4728a35bc54409af72ebb3c"
+checksum = "2704d2760a7070445ab2fcb5a363cc964e6abe00ccbab01077298d3f6e622373"
 dependencies = [
  "nom 6.1.2",
  "nom-greedyerror",
@@ -905,9 +908,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-syntaxtree"
-version = "0.12.2"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a49debd66a99e1783badfa9780bb96b3a96b92d94ebd58ca4b82f3a32ca498a3"
+checksum = "0ceede5cb1b4b76bfba0b496a7d7b07412ccc6ba2a90076aeed4bc5b2dfd15f8"
 dependencies = [
  "regex",
  "sv-parser-macros",
@@ -916,9 +919,9 @@ dependencies = [
 
 [[package]]
 name = "svlint"
-version = "0.6.1"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94ea783ecc42deeef8ca6f749ce84e2d24b20af92b0d8807fc3c599f6e44a3c9"
+checksum = "8edfe592e8c7e9a18db233fe60cff2742da13cf8d8a927dc26304a8465570d69"
 dependencies = [
  "anyhow",
  "clap",
@@ -932,7 +935,7 @@ dependencies = [
  "sv-filelist-parser",
  "sv-parser",
  "term",
- "toml",
+ "toml 0.7.3",
  "walkdir",
 ]
 
@@ -950,7 +953,7 @@ dependencies = [
  "sv-parser",
  "svlint",
  "tokio",
- "toml",
+ "toml 0.5.11",
  "tower-lsp",
 ]
 
@@ -1104,6 +1107,40 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f4f7f0dd8d50a853a531c426359045b1998f04219d88799810762cd4ad314234"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "toml"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b403acf6f2bb0859c93c7f0d967cb4a75a7ac552100f9322faf64dc047669b21"
+dependencies = [
+ "serde",
+ "serde_spanned",
+ "toml_datetime",
+ "toml_edit",
+]
+
+[[package]]
+name = "toml_datetime"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3ab8ed2edee10b50132aed5f331333428b011c99402b5a534154ed15746f9622"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "toml_edit"
+version = "0.19.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc18466501acd8ac6a3f615dd29a3438f8ca6bb3b19537138b3106e575621274"
+dependencies = [
+ "indexmap",
+ "serde",
+ "serde_spanned",
+ "toml_datetime",
+ "winnow",
 ]
 
 [[package]]
@@ -1285,6 +1322,15 @@ name = "winapi-x86_64-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+
+[[package]]
+name = "winnow"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "23d020b441f92996c80d94ae9166e8501e59c7bb56121189dc9eab3bd8216966"
+dependencies = [
+ "memchr",
+]
 
 [[package]]
 name = "wyz"

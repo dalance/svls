@@ -30,8 +30,8 @@ log          = "0.4"
 serde        = {version = "1", features = ["derive"]}
 serde_json   = "1"
 simplelog    = "0.12"
-svlint       = "0.6.1"
-sv-parser    = "0.12.2"
+svlint       = "0.7.0"
+sv-parser    = "0.13.0"
 tokio        = {version = "1.6", features = ["io-std", "macros", "rt", "test-util"]}
 toml         = "0.5"
 tower-lsp    = "0.19"
