@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.2.7...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.2.8...Unreleased) - ReleaseDate
+
+## [v0.2.8](https://github.com/dalance/svls/compare/v0.2.7...v0.2.8) - 2023-03-23
 
 * [Fixed] Fix invalid diag [#202](https://github.com/dalance/svls/pull/202)
 * [Changed] Update sv-parser and svlint
