@@ -33,7 +33,7 @@ simplelog    = "0.12"
 svlint       = "0.7.1"
 sv-parser    = "0.13.1"
 tokio        = {version = "1.6", features = ["io-std", "macros", "rt", "test-util"]}
-toml         = "0.5"
+toml         = "0.7"
 tower-lsp    = "0.19"
 
 [profile.release]
