@@ -17,7 +17,7 @@ use tower_lsp::{LspService, Server};
 #[clap(long_version(option_env!("LONG_VERSION").unwrap_or(env!("CARGO_PKG_VERSION"))))]
 pub struct Opt {
     /// Debug mode
-    #[clap(short = 'd', long = "debug")]
+    #[clap(action, short = 'd', long = "debug")]
     pub debug: bool,
 }
 
@@ -43,7 +43,5 @@ async fn main() {
     let stdout = tokio::io::stdout();
 
     let (service, messages) = LspService::new(Backend::new);
-    Server::new(stdin, stdout, messages)
-        .serve(service)
-        .await;
+    Server::new(stdin, stdout, messages).serve(service).await;
 }
