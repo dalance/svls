@@ -136,6 +136,8 @@ impl Backend {
                     }
                 }
             }
+        } else {
+            debug!("linter initialization failed");
         }
         ret
     }
