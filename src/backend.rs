@@ -148,7 +148,7 @@ impl LanguageServer for Backend {
     async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
         debug!("root_uri: {:?}", params.root_uri);
 
-        let config_svls = search_config(&PathBuf::from(".svls.toml"));
+        let config_svls = search_config_svls(&PathBuf::from(".svls.toml"));
         debug!("config_svls: {:?}", config_svls);
         let config = match generate_config(config_svls) {
             Ok(x) => x,
@@ -250,6 +250,22 @@ fn search_config(config: &Path) -> Option<PathBuf> {
             None
         }
     })
+}
+
+fn search_config_svls(config: &Path) -> Option<PathBuf> {
+    if let Ok(c) = env::var("SVLS_CONFIG") {
+        let candidate = Path::new(&c);
+        if candidate.exists() {
+            return Some(candidate.to_path_buf());
+        } else {
+            debug!(
+                "SVLS_CONFIG=\"{}\" does not exist. Searching hierarchically.",
+                c
+            );
+        }
+    }
+
+    search_config(config)
 }
 
 fn search_config_svlint(config: &Path) -> Option<PathBuf> {
