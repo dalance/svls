@@ -61,38 +61,42 @@ impl Backend {
         } else {
             PathBuf::from("")
         };
-
-        let config = self.config.read().unwrap();
-        let mut include_paths = Vec::new();
-        let mut defines = HashMap::new();
-        if let Some(ref config) = *config {
-            for path in &config.verilog.include_paths {
-                let mut p = root_uri.clone();
-                p.push(PathBuf::from(path));
-                include_paths.push(p);
-            }
-            for define in &config.verilog.defines {
-                let mut define = define.splitn(2, '=');
-                let ident = String::from(define.next().unwrap());
-                let text = define
-                    .next()
-                    .and_then(|x| enquote::unescape(x, None).ok())
-                    .map(|x| DefineText::new(x, None));
-                let define = Define::new(ident.clone(), vec![], text);
-                defines.insert(ident, Some(define));
-            }
-        };
-        debug!("include_paths: {:?}", include_paths);
-        debug!("defines: {:?}", defines);
-
-        let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
-            x.to_path_buf()
-        } else {
-            PathBuf::from("")
-        };
-
         let mut linter = self.linter.write().unwrap();
         if let Some(ref mut linter) = *linter {
+
+            let config = self.config.read().unwrap();
+            let mut include_paths = Vec::new();
+            let mut defines = HashMap::new();
+            if let Some(ref config) = *config {
+                for path in &config.verilog.include_paths {
+                    let mut p = root_uri.clone();
+                    p.push(PathBuf::from(path));
+                    include_paths.push(p);
+                }
+                for define in &config.verilog.defines {
+                    let mut define = define.splitn(2, '=');
+                    let ident = String::from(define.next().unwrap());
+                    let text = define
+                        .next()
+                        .and_then(|x| enquote::unescape(x, None).ok())
+                        .map(|x| DefineText::new(x, None));
+                    let define = Define::new(ident.clone(), vec![], text);
+                    defines.insert(ident, Some(define));
+                }
+                for plugin in &config.verilog.plugins {
+                    debug!("plugin: {:?}", &plugin);
+                    linter.load(&plugin).unwrap();
+                }
+            };
+            debug!("include_paths: {:?}", include_paths);
+            debug!("defines: {:?}", defines);
+
+            let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
+                x.to_path_buf()
+            } else {
+                PathBuf::from("")
+            };
+
             // Iterate over lines in the file, applying each textrule to each line
             // in turn.
             let mut beg: usize = 0;
