@@ -47,6 +47,7 @@ The example of `.svls.toml` is below:
 [verilog]
 include_paths = ["src/header"]
 defines = ["DEBUG", "VAR=1"]
+plugins = ["path/to/libfoo.so", "path/to/libbar.so"]
 
 [option]
 linter = true
@@ -56,6 +57,7 @@ linter = true
 
 `include_paths` is include paths from the root of repository.
 `defines` is define strings.
+`plugins` is paths to svlint plugins from the working directory.
 
 #### `[option]` section
 
