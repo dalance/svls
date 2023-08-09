@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 use sv_parser::{parse_sv_str, Define, DefineText};
 use svlint::config::Config as LintConfig;
-use svlint::linter::{Linter, LintFailed};
+use svlint::linter::{Linter, LintFailed, TextRuleEvent};
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{async_trait, Client, LanguageServer};
@@ -97,13 +97,17 @@ impl Backend {
                 PathBuf::from("")
             };
 
+            // Signal beginning of file to all TextRules, which *may* be used
+            // by textrules to reset their internal state.
+            let _ = linter.textrules_check(TextRuleEvent::StartOfFile, &src_path, &0);
+
             // Iterate over lines in the file, applying each textrule to each line
             // in turn.
             let mut beg: usize = 0;
             for line in s.split_inclusive('\n') {
                 let line_stripped = line.trim_end_matches(&['\n', '\r']);
 
-                for failed in linter.textrules_check(&line_stripped, &src_path, &beg) {
+                for failed in linter.textrules_check(TextRuleEvent::Line(&line_stripped), &src_path, &beg) {
                     Self::push_failed(failed, &src_path, &s, &mut ret);
                 }
                 beg += line.len();
