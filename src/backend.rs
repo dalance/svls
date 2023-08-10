@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 use sv_parser::{parse_sv_str, Define, DefineText};
 use svlint::config::Config as LintConfig;
-use svlint::linter::Linter;
+use svlint::linter::{Linter, LintFailed, TextRuleEvent};
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{async_trait, Client, LanguageServer};
@@ -29,6 +29,25 @@ impl Backend {
         }
     }
 
+    fn push_failed(failed: LintFailed, src_path: &PathBuf, s: &str, ret: &mut Vec<Diagnostic>) {
+        debug!("{:?}", failed);
+        if failed.path == *src_path {
+            let (line, col) = get_position(s, failed.beg);
+            ret.push(Diagnostic::new(
+                Range::new(
+                    Position::new(line, col),
+                    Position::new(line, col + failed.len as u32),
+                ),
+                Some(DiagnosticSeverity::WARNING),
+                Some(NumberOrString::String(failed.name)),
+                Some(String::from("svls")),
+                failed.hint,
+                None,
+                None,
+            ));
+        }
+    }
+
     fn lint(&self, s: &str, path: &Path) -> Vec<Diagnostic> {
         let mut ret = Vec::new();
 
@@ -42,57 +61,82 @@ impl Backend {
         } else {
             PathBuf::from("")
         };
+        let mut linter = self.linter.write().unwrap();
+        if let Some(ref mut linter) = *linter {
 
-        let config = self.config.read().unwrap();
-        let mut include_paths = Vec::new();
-        let mut defines = HashMap::new();
-        if let Some(ref config) = *config {
-            for path in &config.verilog.include_paths {
-                let mut p = root_uri.clone();
-                p.push(PathBuf::from(path));
-                include_paths.push(p);
+            let config = self.config.read().unwrap();
+            let mut include_paths = Vec::new();
+            let mut defines = HashMap::new();
+            if let Some(ref config) = *config {
+                for path in &config.verilog.include_paths {
+                    let mut p = root_uri.clone();
+                    p.push(PathBuf::from(path));
+                    include_paths.push(p);
+                }
+                for define in &config.verilog.defines {
+                    let mut define = define.splitn(2, '=');
+                    let ident = String::from(define.next().unwrap());
+                    let text = define
+                        .next()
+                        .and_then(|x| enquote::unescape(x, None).ok())
+                        .map(|x| DefineText::new(x, None));
+                    let define = Define::new(ident.clone(), vec![], text);
+                    defines.insert(ident, Some(define));
+                }
+                for plugin in &config.verilog.plugins {
+                    debug!("plugin: {:?}", &plugin);
+                    linter.load(&plugin).unwrap();
+                }
+            };
+            debug!("include_paths: {:?}", include_paths);
+            debug!("defines: {:?}", defines);
+
+            let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
+                x.to_path_buf()
+            } else {
+                PathBuf::from("")
+            };
+
+            // Signal beginning of file to all TextRules, which *may* be used
+            // by textrules to reset their internal state.
+            let _ = linter.textrules_check(TextRuleEvent::StartOfFile, &src_path, &0);
+
+            // Iterate over lines in the file, applying each textrule to each line
+            // in turn.
+            let mut beg: usize = 0;
+            for line in s.split_inclusive('\n') {
+                let line_stripped = line.trim_end_matches(&['\n', '\r']);
+
+                for failed in linter.textrules_check(TextRuleEvent::Line(&line_stripped), &src_path, &beg) {
+                    Self::push_failed(failed, &src_path, &s, &mut ret);
+                }
+                beg += line.len();
             }
-            for define in &config.verilog.defines {
-                let mut define = define.splitn(2, '=');
-                let ident = String::from(define.next().unwrap());
-                let text = define
-                    .next()
-                    .and_then(|x| enquote::unescape(x, None).ok())
-                    .map(|x| DefineText::new(x, None));
-                let define = Define::new(ident.clone(), vec![], text);
-                defines.insert(ident, Some(define));
-            }
-        };
-        debug!("include_paths: {:?}", include_paths);
-        debug!("defines: {:?}", defines);
 
-        let src_path = if let Ok(x) = path.strip_prefix(root_uri) {
-            x.to_path_buf()
-        } else {
-            PathBuf::from("")
-        };
-
-        let parsed = parse_sv_str(s, &src_path, &defines, &include_paths, false, false);
-        match parsed {
-            Ok((syntax_tree, _new_defines)) => {
-                let mut linter = self.linter.write().unwrap();
-                if let Some(ref mut linter) = *linter {
-                    for event in syntax_tree.into_iter().event() {
-                        for failed in linter.check(&syntax_tree, &event) {
-                            debug!("{:?}", failed);
-                            if failed.path != src_path {
-                                continue;
+            // Iterate over nodes in the concrete syntax tree, applying each
+            // syntaxrule to each node in turn.
+            let parsed = parse_sv_str(&s, &src_path, &defines, &include_paths, false, false);
+            match parsed {
+                Ok((syntax_tree, _new_defines)) => {
+                        for event in syntax_tree.into_iter().event() {
+                            for failed in linter.syntaxrules_check(&syntax_tree, &event) {
+                                Self::push_failed(failed, &src_path, &s, &mut ret);
                             }
-                            let (line, col) = get_position(s, failed.beg);
+                        }
+                }
+                Err(x) => {
+                    debug!("parse_error: {:?}", x);
+                    if let sv_parser::Error::Parse(Some((path, pos))) = x {
+                        if path.as_path() == src_path {
+                            let (line, col) = get_position(s, pos);
+                            let line_end = get_line_end(s, pos);
+                            let len = line_end - pos as u32;
                             ret.push(Diagnostic::new(
-                                Range::new(
-                                    Position::new(line, col),
-                                    Position::new(line, col + failed.len as u32),
-                                ),
-                                Some(DiagnosticSeverity::WARNING),
-                                Some(NumberOrString::String(failed.name)),
+                                Range::new(Position::new(line, col), Position::new(line, col + len)),
+                                Some(DiagnosticSeverity::ERROR),
+                                None,
                                 Some(String::from("svls")),
-                                failed.hint,
+                                String::from("parse error"),
                                 None,
                                 None,
                             ));
@@ -100,25 +144,8 @@ impl Backend {
                     }
                 }
             }
-            Err(x) => {
-                debug!("parse_error: {:?}", x);
-                if let sv_parser::Error::Parse(Some((path, pos))) = x {
-                    if path.as_path() == src_path {
-                        let (line, col) = get_position(s, pos);
-                        let line_end = get_line_end(s, pos);
-                        let len = line_end - pos as u32;
-                        ret.push(Diagnostic::new(
-                            Range::new(Position::new(line, col), Position::new(line, col + len)),
-                            Some(DiagnosticSeverity::ERROR),
-                            None,
-                            Some(String::from("svls")),
-                            String::from("parse error"),
-                            None,
-                            None,
-                        ));
-                    }
-                }
-            }
+        } else {
+            debug!("linter initialization failed");
         }
         ret
     }
@@ -129,7 +156,7 @@ impl LanguageServer for Backend {
     async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
         debug!("root_uri: {:?}", params.root_uri);
 
-        let config_svls = search_config(&PathBuf::from(".svls.toml"));
+        let config_svls = search_config_svls(&PathBuf::from(".svls.toml"));
         debug!("config_svls: {:?}", config_svls);
         let config = match generate_config(config_svls) {
             Ok(x) => x,
@@ -231,6 +258,22 @@ fn search_config(config: &Path) -> Option<PathBuf> {
             None
         }
     })
+}
+
+fn search_config_svls(config: &Path) -> Option<PathBuf> {
+    if let Ok(c) = env::var("SVLS_CONFIG") {
+        let candidate = Path::new(&c);
+        if candidate.exists() {
+            return Some(candidate.to_path_buf());
+        } else {
+            debug!(
+                "SVLS_CONFIG=\"{}\" does not exist. Searching hierarchically.",
+                c
+            );
+        }
+    }
+
+    search_config(config)
 }
 
 fn search_config_svlint(config: &Path) -> Option<PathBuf> {

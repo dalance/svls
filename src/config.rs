@@ -21,6 +21,8 @@ pub struct ConfigVerilog {
     pub include_paths: Vec<PathBuf>,
     #[serde(default)]
     pub defines: Vec<String>,
+    #[serde(default)]
+    pub plugins: Vec<PathBuf>,
 }
 
 impl Default for Config {
