@@ -12,6 +12,54 @@ dependencies = [
 ]
 
 [[package]]
+name = "anstream"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1f58811cfac344940f1a400b6e6231ce35171f614f26439e80f8c1465c5cc0c"
+dependencies = [
+ "anstyle",
+ "anstyle-parse",
+ "anstyle-query",
+ "anstyle-wincon",
+ "colorchoice",
+ "utf8parse",
+]
+
+[[package]]
+name = "anstyle"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b84bf0a05bbb2a83e5eb6fa36bb6e87baa08193c35ff52bbf6b38d8af2890e46"
+
+[[package]]
+name = "anstyle-parse"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "938874ff5980b03a87c5524b3ae5b59cf99b1d6bc836848df7bc5ada9643c333"
+dependencies = [
+ "utf8parse",
+]
+
+[[package]]
+name = "anstyle-query"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ca11d4be1bab0c8bc8734a9aa7bf4ee8316d462a08c6ac5052f888fef5b494b"
+dependencies = [
+ "windows-sys",
+]
+
+[[package]]
+name = "anstyle-wincon"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58f54d10c6dfa51283a066ceab3ec1ab78d13fae00aa49243a45e4571fb79dfd"
+dependencies = [
+ "anstyle",
+ "windows-sys",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -83,19 +131,41 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "clap"
-version = "3.2.2"
+version = "3.2.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e538f9ee5aa3b3963f09a997035f883677966ed50fce0292611927ce6f6d8c6"
+checksum = "4ea181bf566f71cb9a5d17a59e1871af638180a18fb0035c92ae62b705207123"
 dependencies = [
  "atty",
  "bitflags",
- "clap_derive",
- "clap_lex",
+ "clap_derive 3.2.25",
+ "clap_lex 0.2.4",
  "indexmap 1.9.2",
- "lazy_static",
+ "once_cell",
  "strsim",
  "termcolor",
  "textwrap",
+]
+
+[[package]]
+name = "clap"
+version = "4.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "84ed82781cea27b43c9b106a979fe450a13a31aab0500595fb3fc06616de08e6"
+dependencies = [
+ "clap_builder",
+ "clap_derive 4.4.2",
+]
+
+[[package]]
+name = "clap_builder"
+version = "4.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2bb9faaa7c2ef94b2743a21f5a29e6f0010dff4caa69ac8e9d6cf8b6fa74da08"
+dependencies = [
+ "anstream",
+ "anstyle",
+ "clap_lex 0.5.1",
+ "strsim",
 ]
 
 [[package]]
@@ -104,20 +174,32 @@ version = "3.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f7a2e0a962c45ce25afce14220bc24f9dade0a1787f185cecf96bfba7847cd8"
 dependencies = [
- "clap",
+ "clap 3.2.25",
 ]
 
 [[package]]
 name = "clap_derive"
-version = "3.2.2"
+version = "3.2.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7f98063cac4652f23ccda556b8d04347a7fc4b2cff1f7577cc8c6546e0d8078"
+checksum = "ae6371b8bdc8b7d3959e9cf7b22d4435ef3e79e138688421ec654acf8c81b008"
 dependencies = [
  "heck",
  "proc-macro-error",
  "proc-macro2",
  "quote",
  "syn 1.0.104",
+]
+
+[[package]]
+name = "clap_derive"
+version = "4.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0862016ff20d69b84ef8247369fabf5c008a7417002411897d40ee1f4532b873"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.28",
 ]
 
 [[package]]
@@ -128,6 +210,18 @@ checksum = "2850f2f5a82cbf437dd5af4d49848fbdfc27c157c3d010345776f952765261c5"
 dependencies = [
  "os_str_bytes",
 ]
+
+[[package]]
+name = "clap_lex"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cd7cc57abe963c6d3b9d8be5b06ba7c8957a930305ca90304f24ef040aa6f961"
+
+[[package]]
+name = "colorchoice"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
 name = "colored"
@@ -527,9 +621,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.10.0"
+version = "1.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "87f3e037eac156d1775da914196f0f37741a274155e34a0b7e427c35d2a2ecb9"
+checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
 name = "os_str_bytes"
@@ -861,7 +955,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d02dd9ca85b9f45ccb2964fe4ec59b29cab633d03d5a26c6a5e977020f94ce49"
 dependencies = [
  "anyhow",
- "clap",
+ "clap 3.2.25",
  "clap_complete",
  "colored",
  "enquote",
@@ -882,7 +976,7 @@ name = "svls"
 version = "0.2.9"
 dependencies = [
  "anyhow",
- "clap",
+ "clap 4.4.3",
  "enquote",
  "log",
  "serde",
@@ -939,9 +1033,9 @@ dependencies = [
 
 [[package]]
 name = "textwrap"
-version = "0.15.0"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1141d4d61095b28419e22cb0bbf02755f5e54e0526f97f1e3d1d160e60885fb"
+checksum = "222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d"
 
 [[package]]
 name = "thiserror"
@@ -1216,6 +1310,12 @@ dependencies = [
  "percent-encoding",
  "serde",
 ]
+
+[[package]]
+name = "utf8parse"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "711b9620af191e0cdc7468a8d14e709c3dcdb115b36f838e601583af800a370a"
 
 [[package]]
 name = "version_check"
