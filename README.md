@@ -67,7 +67,7 @@ linter = true
 
 Linter uses `.svlint.toml` at the root of repository.
 If `.svlint.toml` can't be used, all lint rules are enabled.
-Please see [svlint#configuration](https://github.com/dalance/svlint#configuration) for the detailed information.
+Please see [svlint#configuration](https://github.com/dalance/svlint/blob/master/MANUAL.md#configuration) for the detailed information.
 
 ## Usage
 
