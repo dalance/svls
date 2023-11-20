@@ -879,7 +879,7 @@ dependencies = [
 
 [[package]]
 name = "svls"
-version = "0.2.9"
+version = "0.2.10"
 dependencies = [
  "anyhow",
  "clap",

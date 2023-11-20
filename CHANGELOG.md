@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased](https://github.com/dalance/svls/compare/v0.2.9...Unreleased) - ReleaseDate
+## [Unreleased](https://github.com/dalance/svls/compare/v0.2.10...Unreleased) - ReleaseDate
+
+## [v0.2.10](https://github.com/dalance/svls/compare/v0.2.9...v0.2.10) - 2023-11-20
 
 * [Added] Feature: Support svlint v0.8.0 with TextRule and SyntaxRule. [#216](https://github.com/dalance/svls/pull/216)
 
