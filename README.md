@@ -219,3 +219,13 @@ In configuration file
       (flycheck-mode t)
       (add-to-list 'lsp-language-id-configuration '(verilog-mode . "verilog")))))
 ```
+
+### Emacs with [verilog-ext](https://github.com/gmlarumbe/verilog-ext)
+
+```elisp
+(require 'verilog-ext)
+(verilog-ext-mode-setup)
+(verilog-ext-eglot-set-server 've-svls) ;`eglot' config
+(verilog-ext-lsp-set-server 've-svls)   ; `lsp' config
+```
+
