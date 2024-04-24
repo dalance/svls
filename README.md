@@ -229,3 +229,15 @@ In configuration file
 (verilog-ext-lsp-set-server 've-svls)   ; `lsp' config
 ```
 
+### Helix
+
+In `languages.toml`:
+
+```toml
+[language-server.svls]
+command = "svls"
+
+[[language]]
+name = "verilog"
+language-servers = ["svls"]
+```
