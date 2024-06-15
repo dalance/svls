@@ -107,6 +107,26 @@ In configuration file
 }
 ```
 
+### Neovim with [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+
+In configuration file
+```lua
+{
+  "neovim/nvim-lspconfig",
+  opts = {
+    servers = {
+      svls = {
+        root_dir = function(fname)
+          return require("lspconfig.util").find_git_ancestor(fname)
+        end,
+        cmd = { "svls" },
+        filetypes = { "verilog", "systemverilog" },
+      },
+    },
+  },
+}
+```
+
 ### Emacs with [lsp-mode](https://github.com/emacs-lsp/lsp-mode)
 
 ```emacs-lisp
