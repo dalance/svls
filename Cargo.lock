@@ -232,7 +232,7 @@ version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06c36cb11dbde389f4096111698d8b567c0720e3452fd5ac3e6b4e47e1939932"
 dependencies = [
- "thiserror",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -1024,9 +1024,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "425309b8d5bbd38fe592ba1a19e91ccdaab66e1ef312eb0ce0b8d6e4295ef4cb"
+checksum = "7e3cb47be895e87c45ec62a6007d5fb2f9fcc16901505d9b8ebf10c0ecc3ad55"
 dependencies = [
  "nom",
  "nom-greedyerror",
@@ -1038,18 +1038,18 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-error"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d702ef215611db3c9cbd57c39a543fc72924eff9defb2b5e0461617929ef1a86"
+checksum = "f096e56219e347b9a80f81d1bd0735bb01f08fbdcd7db27af930214d11c73007"
 dependencies = [
- "thiserror",
+ "thiserror 2.0.17",
 ]
 
 [[package]]
 name = "sv-parser-macros"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a2eba85c18b26226dee76a6f07a1cb189130012a32109474ae182666b4e9b00"
+checksum = "ad202093c8d708d44346defdd8a822a642382f7e25e1acd4d60886e22118be3c"
 dependencies = [
  "quote",
  "syn 2.0.106",
@@ -1057,9 +1057,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-parser"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ccb13fe101bdf64fa533121759d96f75b4e3038c03320fad4cd697063f9e101"
+checksum = "9828f37b7d8300760af0f82c5f0cbfe74d4b40a59aecfc125ecfae739e143351"
 dependencies = [
  "nom",
  "nom-greedyerror",
@@ -1074,9 +1074,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-pp"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d580999e597ef78b966343276e3a948b2d99348dbc58ddc1e9a596c3a7a8a10"
+checksum = "12bb664321fb38eacb5b35b8df07cd446bf1e312e24e2c19bfbb1991883810db"
 dependencies = [
  "nom",
  "nom-greedyerror",
@@ -1087,9 +1087,9 @@ dependencies = [
 
 [[package]]
 name = "sv-parser-syntaxtree"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75394b4b48cf789e5eb148f4a47f82c119424166572e13e3dee5394fc1da7ad0"
+checksum = "ea1ef9bafa127301bfbb9aa839ecd37e5b4a9aad839af4192188a3f8d53ee274"
 dependencies = [
  "regex",
  "sv-parser-macros",
@@ -1098,9 +1098,9 @@ dependencies = [
 
 [[package]]
 name = "svlint"
-version = "0.9.4"
+version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4a18e69bfb7ae358641f9262d2688b1eb4b06efdbcba567bcaefef9fa1d19e9b"
+checksum = "211e5b1c7318d29882248f3073b65d2d478693903a0ed8764231269d465812e3"
 dependencies = [
  "anyhow",
  "chardetng",
@@ -1202,7 +1202,16 @@ version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52"
 dependencies = [
- "thiserror-impl",
+ "thiserror-impl 1.0.69",
+]
+
+[[package]]
+name = "thiserror"
+version = "2.0.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f63587ca0f12b72a0600bcba1d40081f830876000bb46dd2337a3051618f4fc8"
+dependencies = [
+ "thiserror-impl 2.0.17",
 ]
 
 [[package]]
@@ -1210,6 +1219,17 @@ name = "thiserror-impl"
 version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.106",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "2.0.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3ff15c8ecd7de3849db632e14d18d2571fa09dfc5ed93479bc4485c7a517c913"
 dependencies = [
  "proc-macro2",
  "quote",
