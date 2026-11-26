@@ -33,10 +33,11 @@ impl Backend {
         debug!("{:?}", failed);
         if failed.path == *src_path {
             let (line, col) = get_position(s, failed.beg);
+            let (end_line, end_col) = get_position(s, failed.beg + failed.len);
             ret.push(Diagnostic::new(
                 Range::new(
                     Position::new(line, col),
-                    Position::new(line, col + failed.len as u32),
+                    Position::new(end_line, end_col),
                 ),
                 Some(DiagnosticSeverity::WARNING),
                 Some(NumberOrString::String(failed.name)),
@@ -130,9 +131,12 @@ impl Backend {
                         if path.as_path() == src_path {
                             let (line, col) = get_position(s, pos);
                             let line_end = get_line_end(s, pos);
-                            let len = line_end - pos as u32;
+                            let (end_line, end_col) = get_position(s, line_end as usize);
                             ret.push(Diagnostic::new(
-                                Range::new(Position::new(line, col), Position::new(line, col + len)),
+                                Range::new(
+                                    Position::new(line, col),
+                                    Position::new(end_line, end_col),
+                                ),
                                 Some(DiagnosticSeverity::ERROR),
                                 None,
                                 Some(String::from("svls")),
@@ -332,19 +336,13 @@ fn generate_linter(config: Option<PathBuf>) -> std::result::Result<Linter, Strin
 fn get_position(s: &str, pos: usize) -> (u32, u32) {
     let mut line = 0;
     let mut col = 0;
-    let mut p = 0;
-    while p < pos {
-        if let Some(c) = s.get(p..p + 1) {
-            if c == "\n" {
-                line += 1;
-                col = 0;
-            } else {
-                col += 1;
-            }
+    for c in s[..pos].chars() {
+        if c == '\n' {
+            line += 1;
+            col = 0;
         } else {
-            col += 1;
+            col += c.len_utf16() as u32;
         }
-        p += 1;
     }
     (line, col)
 }
@@ -360,4 +358,25 @@ fn get_line_end(s: &str, pos: usize) -> u32 {
         p += 1;
     }
     p as u32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn diagnostic_positions_use_utf16_columns() {
+        let s = "module test;\n  /* 中文 😀 */ wire a;\nendmodule\n";
+        let beg = s.find("wire").unwrap();
+        assert_eq!(get_position(s, beg), (1, 14));
+        assert_eq!(get_position(s, beg + 4), (1, 18));
+        assert_eq!(get_position(s, s.find("endmodule").unwrap()), (2, 0));
+    }
+
+    #[test]
+    fn diagnostic_end_counts_unicode_in_the_range() {
+        let s = "// 中文 😀\n";
+        assert_eq!(get_position(s, get_line_end(s, 0) as usize), (0, 8));
+        assert_eq!(get_position(s, s.len()), (1, 0));
+    }
 }
